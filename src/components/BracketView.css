@@ -1,54 +1,54 @@
 .bracket-side {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .bracket-label {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--gold);
-  margin: 0 0 12px 0;
+  margin: 0 0 0.75rem 0;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.0625rem;
 }
 
 .rounds-container {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   overflow-x: auto;
-  padding-bottom: 8px;
+  padding-bottom: 0.5rem;
   -webkit-overflow-scrolling: touch;
 }
 
 .round {
   flex-shrink: 0;
-  min-width: 200px;
+  min-width: 12.5rem;
 }
 
 .round-label {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--text-muted);
-  margin: 0 0 8px 0;
+  margin: 0 0 0.5rem 0;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
 }
 
 .round-matches {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 /* Landscape phone: let rounds fill available width */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 31.25rem) {
   .round {
-    min-width: 180px;
+    min-width: 11.25rem;
     flex: 1;
   }
 }
 
 /* Tablet+: rounds can breathe more */
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .round {
-    min-width: 220px;
+    min-width: 13.75rem;
   }
 }

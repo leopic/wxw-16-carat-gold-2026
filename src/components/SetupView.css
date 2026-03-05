@@ -1,53 +1,53 @@
 .setup-view {
-  max-width: 500px;
+  max-width: 31.25rem;
   margin: 0 auto;
-  padding: 20px 16px;
+  padding: 1.25rem 1rem;
 }
 
 .setup-title {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--gold);
-  margin: 0 0 4px 0;
+  margin: 0 0 0.25rem 0;
   text-align: center;
 }
 
 .setup-subtitle {
   color: var(--text-muted);
   text-align: center;
-  margin: 0 0 24px 0;
-  font-size: 14px;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.875rem;
 }
 
 .setup-matches {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .setup-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .match-num {
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
-  width: 18px;
+  width: 1.125rem;
   text-align: center;
   flex-shrink: 0;
 }
 
 .setup-row input {
   flex: 1;
-  padding: 10px 12px;
+  padding: 0.625rem 0.75rem;
   border: 2px solid var(--border);
-  border-radius: 6px;
+  border-radius: 0.375rem;
   background: var(--bg-input);
   color: var(--text);
-  font-size: 14px;
+  font-size: 0.875rem;
   outline: none;
   transition: border-color 0.15s;
   min-width: 0;
@@ -63,7 +63,7 @@
 
 .setup-vs {
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   flex-shrink: 0;
@@ -72,20 +72,20 @@
 .start-btn {
   display: block;
   width: 100%;
-  padding: 14px;
-  margin-top: 20px;
+  padding: 0.875rem;
+  margin-top: 1.25rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: var(--gold);
   color: var(--gold-contrast);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: opacity 0.15s;
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
-  min-height: 48px;
+  min-height: 3rem;
 }
 
 .start-btn:hover:not(:disabled) {
@@ -98,37 +98,40 @@
 }
 
 /* Landscape phone: 2-column matchup grid */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 31.25rem) {
   .setup-view {
-    max-width: 700px;
+    max-width: 100%;
+    padding: 1rem 1.5rem;
   }
 
   .setup-matches {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 0.5rem;
+    max-width: 43.75rem;
+    margin: 0 auto;
   }
 
   .start-btn {
-    max-width: 400px;
+    max-width: 25rem;
     margin-left: auto;
     margin-right: auto;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .setup-view {
-    max-width: 700px;
+    max-width: 43.75rem;
   }
 
   .setup-matches {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 0.625rem;
   }
 
   .start-btn {
-    max-width: 400px;
+    max-width: 25rem;
     margin-left: auto;
     margin-right: auto;
   }

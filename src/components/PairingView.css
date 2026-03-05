@@ -1,40 +1,40 @@
 .pairing-view {
-  max-width: 500px;
+  max-width: 31.25rem;
   margin: 0 auto;
-  padding: 20px 16px;
+  padding: 1.25rem 1rem;
 }
 
 .pairing-title {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--gold);
-  margin: 0 0 4px 0;
+  margin: 0 0 0.25rem 0;
   text-align: center;
 }
 
 .pairing-subtitle {
   color: var(--text-muted);
   text-align: center;
-  margin: 0 0 20px 0;
-  font-size: 14px;
+  margin: 0 0 1.25rem 0;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 
 .winner-pool {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
   justify-content: center;
 }
 
 .pool-chip {
-  padding: 10px 16px;
+  padding: 0.625rem 1rem;
   border: 2px solid var(--border-light);
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background: var(--bg-input);
   color: var(--text);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
@@ -55,44 +55,44 @@
 
 .pool-empty {
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-style: italic;
 }
 
 .pairing-slots {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .pairing-slot {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
 }
 
 .slot-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .slot-label {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-muted);
 }
 
 .slot-side {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 2px 8px;
-  border-radius: 4px;
+  letter-spacing: 0.03125rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .left-tag {
@@ -108,22 +108,22 @@
 .slot-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .slot-btn {
   flex: 1;
-  padding: 12px 8px;
+  padding: 0.75rem 0.5rem;
   border: 2px dashed var(--border-light);
-  border-radius: 6px;
+  border-radius: 0.375rem;
   background: transparent;
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 0.8125rem;
   cursor: pointer;
   transition: all 0.15s;
   text-align: center;
   min-width: 0;
-  min-height: 44px;
+  min-height: 2.75rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -148,44 +148,44 @@
 
 .slot-vs {
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   flex-shrink: 0;
 }
 
 /* Landscape phone: 2x2 grid for pairing slots */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 31.25rem) {
   .pairing-view {
-    max-width: 700px;
+    max-width: 43.75rem;
   }
 
   .pairing-slots {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 0.625rem;
   }
 
   .start-btn {
-    max-width: 400px;
+    max-width: 25rem;
     margin-left: auto;
     margin-right: auto;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .pairing-view {
-    max-width: 700px;
+    max-width: 43.75rem;
   }
 
   .pairing-slots {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 0.75rem;
   }
 
   .start-btn {
-    max-width: 400px;
+    max-width: 25rem;
     margin-left: auto;
     margin-right: auto;
   }
