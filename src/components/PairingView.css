@@ -1,0 +1,148 @@
+.pairing-view {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.pairing-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e94560;
+  margin: 0 0 4px 0;
+  text-align: center;
+}
+
+.pairing-subtitle {
+  color: #888;
+  text-align: center;
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.winner-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.pool-chip {
+  padding: 8px 14px;
+  border: 2px solid #444;
+  border-radius: 20px;
+  background: #16213e;
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pool-chip:hover {
+  border-color: #e94560;
+}
+
+.pool-chip.selected {
+  border-color: #e94560;
+  background: #e94560;
+  color: #fff;
+}
+
+.pool-empty {
+  color: #555;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.pairing-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.pairing-slot {
+  background: #1a1a2e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.slot-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+}
+
+.slot-side {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.left-tag {
+  color: #4ecdc4;
+  background: rgba(78, 205, 196, 0.15);
+}
+
+.right-tag {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.15);
+}
+
+.slot-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slot-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: 2px dashed #444;
+  border-radius: 6px;
+  background: transparent;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slot-btn.ready {
+  border-color: #e94560;
+  color: #e94560;
+  border-style: dashed;
+}
+
+.slot-btn.filled {
+  border-style: solid;
+  border-color: #4ecdc4;
+  background: rgba(78, 205, 196, 0.1);
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.slot-vs {
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}

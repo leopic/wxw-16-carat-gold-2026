@@ -1,0 +1,39 @@
+.bracket-side {
+  margin-bottom: 24px;
+}
+
+.bracket-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e94560;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rounds-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.round {
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
+.round-label {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.round-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

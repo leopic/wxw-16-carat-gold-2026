@@ -1,0 +1,94 @@
+.setup-view {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.setup-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e94560;
+  margin: 0 0 4px 0;
+  text-align: center;
+}
+
+.setup-subtitle {
+  color: #888;
+  text-align: center;
+  margin: 0 0 24px 0;
+  font-size: 14px;
+}
+
+.setup-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setup-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.match-num {
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.setup-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  background: #16213e;
+  color: #e0e0e0;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 0;
+}
+
+.setup-row input:focus {
+  border-color: #e94560;
+}
+
+.setup-row input::placeholder {
+  color: #555;
+}
+
+.setup-vs {
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.start-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 8px;
+  background: #e94560;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.start-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.start-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

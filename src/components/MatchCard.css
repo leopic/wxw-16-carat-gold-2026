@@ -1,0 +1,56 @@
+.match-card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a1a2e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.wrestler-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: 2px solid #444;
+  border-radius: 6px;
+  background: #16213e;
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wrestler-btn:not(:disabled):hover {
+  border-color: #e94560;
+  background: #1a1a3e;
+}
+
+.wrestler-btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.wrestler-btn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.wrestler-btn.winner {
+  background: #e94560;
+  border-color: #e94560;
+  color: #fff;
+  font-weight: 700;
+}
+
+.vs {
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
