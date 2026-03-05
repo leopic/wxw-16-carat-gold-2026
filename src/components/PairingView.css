@@ -29,7 +29,7 @@
 }
 
 .pool-chip {
-  padding: 8px 14px;
+  padding: 10px 16px;
   border: 2px solid var(--border-light);
   border-radius: 20px;
   background: var(--bg-input);
@@ -38,6 +38,9 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .pool-chip:hover {
@@ -110,7 +113,7 @@
 
 .slot-btn {
   flex: 1;
-  padding: 10px 8px;
+  padding: 12px 8px;
   border: 2px dashed var(--border-light);
   border-radius: 6px;
   background: transparent;
@@ -120,9 +123,13 @@
   transition: all 0.15s;
   text-align: center;
   min-width: 0;
+  min-height: 44px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .slot-btn.ready {

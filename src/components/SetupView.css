@@ -82,6 +82,10 @@
   font-weight: 700;
   cursor: pointer;
   transition: opacity 0.15s;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 48px;
 }
 
 .start-btn:hover:not(:disabled) {

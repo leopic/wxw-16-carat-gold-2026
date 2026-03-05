@@ -20,7 +20,7 @@
 }
 
 .back-btn {
-  padding: 6px 14px;
+  padding: 8px 14px;
   border: 1px solid var(--border-light);
   border-radius: 6px;
   background: transparent;
@@ -28,6 +28,8 @@
   font-size: 13px;
   cursor: pointer;
   transition: all 0.15s;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .back-btn:hover {
@@ -36,7 +38,7 @@
 }
 
 .reset-btn {
-  padding: 6px 14px;
+  padding: 8px 14px;
   border: 1px solid var(--border-light);
   border-radius: 6px;
   background: transparent;
@@ -44,6 +46,8 @@
   font-size: 13px;
   cursor: pointer;
   transition: all 0.15s;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .reset-btn:hover {
