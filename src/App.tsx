@@ -82,6 +82,15 @@ function App() {
     });
   };
 
+  const handleBack = () => {
+    setState((prev) => {
+      if (!prev) return prev;
+      if (prev.phase === 'pairing') return { ...prev, phase: 'round1' };
+      if (prev.phase === 'bracket') return { ...prev, phase: 'pairing' };
+      return prev;
+    });
+  };
+
   const handleReset = () => {
     if (confirm('Reset the entire tournament? This cannot be undone.')) {
       localStorage.removeItem(STORAGE_KEY);
@@ -126,6 +135,7 @@ function App() {
     return (
       <div className="app">
         <header className="app-header">
+          <button className="back-btn" onClick={handleBack}>Back</button>
           <h1 className="app-title">wXw 16 Carat Gold 2026</h1>
           <button className="reset-btn" onClick={handleReset}>Reset</button>
         </header>
@@ -144,6 +154,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
+        <button className="back-btn" onClick={handleBack}>Back</button>
         <h1 className="app-title">wXw 16 Carat Gold 2026</h1>
         <button className="reset-btn" onClick={handleReset}>Reset</button>
       </header>
