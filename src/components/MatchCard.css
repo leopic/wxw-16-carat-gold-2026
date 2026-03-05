@@ -32,7 +32,7 @@
 
 .wrestler-btn:not(:disabled):hover {
   border-color: var(--gold);
-  background: #302a20;
+  background: var(--bg-hover);
 }
 
 .wrestler-btn:not(:disabled):active {
@@ -47,7 +47,7 @@
 .wrestler-btn.winner {
   background: var(--gold);
   border-color: var(--gold);
-  color: #1c1c1c;
+  color: var(--gold-contrast);
   font-weight: 700;
 }
 

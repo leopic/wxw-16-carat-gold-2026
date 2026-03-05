@@ -50,7 +50,7 @@
 .pool-chip.selected {
   border-color: var(--gold);
   background: var(--gold);
-  color: #1c1c1c;
+  color: var(--gold-contrast);
 }
 
 .pool-empty {
@@ -97,12 +97,12 @@
 
 .left-tag {
   color: var(--gold-bright);
-  background: rgba(212, 164, 74, 0.15);
+  background: var(--gold-overlay-mid);
 }
 
 .right-tag {
   color: var(--gold-bright);
-  background: rgba(212, 164, 74, 0.15);
+  background: var(--gold-overlay-mid);
 }
 
 .slot-row {
@@ -141,7 +141,7 @@
 .slot-btn.filled {
   border-style: solid;
   border-color: var(--gold-dim);
-  background: rgba(212, 164, 74, 0.1);
+  background: var(--gold-overlay-light);
   color: var(--text);
   font-weight: 500;
 }

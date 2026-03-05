@@ -78,7 +78,7 @@
   color: var(--gold-bright);
   margin-top: 16px;
   padding: 12px;
-  background: rgba(212, 164, 74, 0.12);
+  background: var(--gold-overlay);
   border: 1px solid var(--gold-dim);
   border-radius: 8px;
 }
