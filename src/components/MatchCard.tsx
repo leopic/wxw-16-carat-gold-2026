@@ -1,4 +1,5 @@
 import type { Match } from '../types';
+import { t } from '../i18n';
 import './MatchCard.css';
 
 type Props = {
@@ -21,15 +22,15 @@ export function MatchCard({ match, onPickWinner }: Props) {
         onClick={() => handlePick(match.wrestler1)}
         disabled={!canPick}
       >
-        {match.wrestler1 ?? 'TBD'}
+        {match.wrestler1 ?? t('tbd')}
       </button>
-      <span className="vs">vs</span>
+      <span className="vs">{t('vs')}</span>
       <button
         className={`wrestler-btn ${match.winner === match.wrestler2 && match.wrestler2 ? 'winner' : ''}`}
         onClick={() => handlePick(match.wrestler2)}
         disabled={!canPick}
       >
-        {match.wrestler2 ?? 'TBD'}
+        {match.wrestler2 ?? t('tbd')}
       </button>
     </div>
   );

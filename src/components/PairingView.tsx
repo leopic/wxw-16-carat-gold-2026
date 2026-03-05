@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Round2Pairing, PairingSlot } from '../types';
+import { t } from '../i18n';
 import './PairingView.css';
 
 type Props = {
@@ -59,10 +60,8 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
 
   return (
     <div className="pairing-view">
-      <h1 className="pairing-title">Night 2 Pairings</h1>
-      <p className="pairing-subtitle">
-        Tap a winner below, then tap a slot to place them. First 2 matches = left bracket, last 2 = right bracket.
-      </p>
+      <h1 className="pairing-title">{t('pairingTitle')}</h1>
+      <p className="pairing-subtitle">{t('pairingSubtitle')}</p>
 
       <div className="winner-pool">
         {available.map((w) => (
@@ -75,7 +74,7 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
           </button>
         ))}
         {available.length === 0 && assigned.size < winners.length && (
-          <span className="pool-empty">All winners placed</span>
+          <span className="pool-empty">{t('allPlaced')}</span>
         )}
       </div>
 
@@ -83,23 +82,23 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
         {slots.map((slot, i) => (
           <div key={i} className="pairing-slot">
             <div className="slot-header">
-              <span className="slot-label">Match {i + 1}</span>
-              {i < 2 && <span className="slot-side left-tag">Left</span>}
-              {i >= 2 && <span className="slot-side right-tag">Right</span>}
+              <span className="slot-label">{t('match')} {i + 1}</span>
+              {i < 2 && <span className="slot-side left-tag">{t('left')}</span>}
+              {i >= 2 && <span className="slot-side right-tag">{t('right')}</span>}
             </div>
             <div className="slot-row">
               <button
                 className={`slot-btn ${slot.winner1 ? 'filled' : ''} ${!slot.winner1 && selected ? 'ready' : ''}`}
                 onClick={() => handleSlotTap(i, 'winner1')}
               >
-                {slot.winner1 ?? 'Tap to place'}
+                {slot.winner1 ?? t('tapToPlace')}
               </button>
-              <span className="slot-vs">vs</span>
+              <span className="slot-vs">{t('vs')}</span>
               <button
                 className={`slot-btn ${slot.winner2 ? 'filled' : ''} ${!slot.winner2 && selected ? 'ready' : ''}`}
                 onClick={() => handleSlotTap(i, 'winner2')}
               >
-                {slot.winner2 ?? 'Tap to place'}
+                {slot.winner2 ?? t('tapToPlace')}
               </button>
             </div>
           </div>
@@ -107,7 +106,7 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
       </div>
 
       <button className="start-btn" onClick={handleConfirm} disabled={!allFilled}>
-        Reveal Brackets
+        {t('revealBrackets')}
       </button>
     </div>
   );

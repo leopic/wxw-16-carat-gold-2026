@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Matchup } from '../types';
+import { t } from '../i18n';
 import './SetupView.css';
 
 type Props = {
@@ -40,8 +41,8 @@ export function SetupView({ onStart }: Props) {
 
   return (
     <div className="setup-view">
-      <h1 className="setup-title">Night 1 Setup</h1>
-      <p className="setup-subtitle">Confirm the matchups or edit as needed</p>
+      <h1 className="setup-title">{t('setupTitle')}</h1>
+      <p className="setup-subtitle">{t('setupSubtitle')}</p>
 
       <div className="setup-matches">
         {matchups.map((m, i) => (
@@ -49,14 +50,14 @@ export function SetupView({ onStart }: Props) {
             <span className="match-num">{i + 1}</span>
             <input
               type="text"
-              placeholder={`Wrestler`}
+              placeholder={t('wrestlerPlaceholder')}
               value={m.wrestler1}
               onChange={(e) => update(i, 'wrestler1', e.target.value)}
             />
-            <span className="setup-vs">vs</span>
+            <span className="setup-vs">{t('vs')}</span>
             <input
               type="text"
-              placeholder={`Wrestler`}
+              placeholder={t('wrestlerPlaceholder')}
               value={m.wrestler2}
               onChange={(e) => update(i, 'wrestler2', e.target.value)}
             />
@@ -65,7 +66,7 @@ export function SetupView({ onStart }: Props) {
       </div>
 
       <button className="start-btn" onClick={handleStart} disabled={!allFilled}>
-        Start Night 1
+        {t('startNight1')}
       </button>
     </div>
   );

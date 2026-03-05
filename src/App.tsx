@@ -8,6 +8,7 @@ import {
   buildBracketFromPairings,
   setWinner,
 } from './bracket';
+import { t } from './i18n';
 import { SetupView } from './components/SetupView';
 import { PairingView } from './components/PairingView';
 import { BracketView } from './components/BracketView';
@@ -92,7 +93,7 @@ function App() {
   };
 
   const handleReset = () => {
-    if (confirm('Reset the entire tournament? This cannot be undone.')) {
+    if (confirm(t('resetConfirm'))) {
       localStorage.removeItem(STORAGE_KEY);
       setState(null);
     }
@@ -109,10 +110,10 @@ function App() {
     return (
       <div className="app">
         <header className="app-header">
-          <h1 className="app-title">wXw 16 Carat Gold 2026</h1>
-          <button className="reset-btn" onClick={handleReset}>Reset</button>
+          <h1 className="app-title">{t('appTitle')}</h1>
+          <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
         </header>
-        <p className="phase-subtitle">Pick the winner of each match</p>
+        <p className="phase-subtitle">{t('pickWinner')}</p>
 
         <div className="round1-grid">
           {state.round1Matches.map((match) => (
@@ -122,7 +123,7 @@ function App() {
 
         {r1Done && (
           <button className="start-btn proceed-btn" onClick={handleGoToPairing}>
-            All matches decided — Set Night 2 Pairings
+            {t('allDecided')}
           </button>
         )}
       </div>
@@ -135,9 +136,9 @@ function App() {
     return (
       <div className="app">
         <header className="app-header">
-          <button className="back-btn" onClick={handleBack}>Back</button>
-          <h1 className="app-title">wXw 16 Carat Gold 2026</h1>
-          <button className="reset-btn" onClick={handleReset}>Reset</button>
+          <button className="back-btn" onClick={handleBack}>{t('back')}</button>
+          <h1 className="app-title">{t('appTitle')}</h1>
+          <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
         </header>
         <PairingView
           winners={winners}
@@ -154,16 +155,16 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <button className="back-btn" onClick={handleBack}>Back</button>
-        <h1 className="app-title">wXw 16 Carat Gold 2026</h1>
-        <button className="reset-btn" onClick={handleReset}>Reset</button>
+        <button className="back-btn" onClick={handleBack}>{t('back')}</button>
+        <h1 className="app-title">{t('appTitle')}</h1>
+        <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
       </header>
 
-      <BracketView label="Left Bracket" rounds={bracket.left} onPickWinner={handleBracketPick} />
-      <BracketView label="Right Bracket" rounds={bracket.right} onPickWinner={handleBracketPick} />
+      <BracketView label={t('leftBracket')} rounds={bracket.left} onPickWinner={handleBracketPick} />
+      <BracketView label={t('rightBracket')} rounds={bracket.right} onPickWinner={handleBracketPick} />
 
       <div className="final-section">
-        <h2 className="final-label">Championship Final</h2>
+        <h2 className="final-label">{t('championshipFinal')}</h2>
         <MatchCard match={bracket.final} onPickWinner={handleBracketPick} />
         {bracket.final.winner && (
           <div className="champion-banner">
