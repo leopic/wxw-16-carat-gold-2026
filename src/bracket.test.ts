@@ -7,7 +7,7 @@ import {
   buildBracketFromPairings,
   setWinner,
 } from './bracket';
-import type { Matchup, TournamentState, Round2Pairing, Match } from './types';
+import type { Matchup, TournamentState, Round2Pairing } from './types';
 
 const matchups: Matchup[] = [
   { wrestler1: 'A', wrestler2: 'B' },

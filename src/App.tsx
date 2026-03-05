@@ -13,6 +13,7 @@ import { SetupView } from './components/SetupView';
 import { PairingView } from './components/PairingView';
 import { BracketView } from './components/BracketView';
 import { MatchCard } from './components/MatchCard';
+import { ChampionBanner } from './components/ChampionBanner';
 import './App.css';
 
 const STORAGE_KEY = 'wxw-tournament';
@@ -172,9 +173,7 @@ function App() {
         <h2 className="final-label">{t('championshipFinal')}</h2>
         <MatchCard match={bracket.final} onPickWinner={handleBracketPick} />
         {bracket.final.winner && (
-          <div className="champion-banner">
-            {bracket.final.winner}
-          </div>
+          <ChampionBanner winner={bracket.final.winner} />
         )}
       </div>
     </div>
