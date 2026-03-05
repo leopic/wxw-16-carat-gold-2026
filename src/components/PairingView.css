@@ -153,3 +153,40 @@
   text-transform: uppercase;
   flex-shrink: 0;
 }
+
+/* Landscape phone: 2x2 grid for pairing slots */
+@media (orientation: landscape) and (max-height: 500px) {
+  .pairing-view {
+    max-width: 700px;
+  }
+
+  .pairing-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .start-btn {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .pairing-view {
+    max-width: 700px;
+  }
+
+  .pairing-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .start-btn {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -37,3 +37,18 @@
   flex-direction: column;
   gap: 10px;
 }
+
+/* Landscape phone: let rounds fill available width */
+@media (orientation: landscape) and (max-height: 500px) {
+  .round {
+    min-width: 180px;
+    flex: 1;
+  }
+}
+
+/* Tablet+: rounds can breathe more */
+@media (min-width: 768px) {
+  .round {
+    min-width: 220px;
+  }
+}

@@ -98,3 +98,42 @@
 .proceed-btn {
   margin-top: 20px;
 }
+
+/* Landscape phone: 2-column grid for round 1 matches */
+@media (orientation: landscape) and (max-height: 500px) {
+  .app {
+    max-width: 900px;
+  }
+
+  .round1-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .final-section {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Wider screens (tablet+) */
+@media (min-width: 768px) {
+  .app {
+    max-width: 900px;
+    padding: 24px;
+  }
+
+  .round1-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .final-section {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

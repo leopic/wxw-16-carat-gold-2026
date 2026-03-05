@@ -23,6 +23,8 @@
   --gold-overlay-light: rgba(212, 164, 74, 0.1);
   --gold-overlay-mid: rgba(212, 164, 74, 0.15);
 
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.4;
   font-weight: 400;
