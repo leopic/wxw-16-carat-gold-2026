@@ -20,21 +20,28 @@
 }
 
 .back-btn {
-  padding: 8px 14px;
-  border: 1px solid var(--border-light);
-  border-radius: 6px;
+  padding: 8px 4px;
+  border: none;
   background: transparent;
-  color: var(--text-muted);
-  font-size: 13px;
+  color: var(--gold);
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: opacity 0.15s;
   touch-action: manipulation;
   min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
-.back-btn:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+.back-btn::before {
+  content: '‹';
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.back-btn:active {
+  opacity: 0.5;
 }
 
 .reset-btn {

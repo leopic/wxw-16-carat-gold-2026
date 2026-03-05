@@ -86,6 +86,10 @@ function App() {
   const handleBack = () => {
     setState((prev) => {
       if (!prev) return prev;
+      if (prev.phase === 'round1') {
+        localStorage.removeItem(STORAGE_KEY);
+        return null;
+      }
       if (prev.phase === 'pairing') return { ...prev, phase: 'round1' };
       if (prev.phase === 'bracket') return { ...prev, phase: 'pairing' };
       return prev;
@@ -110,6 +114,7 @@ function App() {
     return (
       <div className="app">
         <header className="app-header">
+          <button className="back-btn" onClick={handleBack}>{t('back')}</button>
           <h1 className="app-title">{t('appTitle')}</h1>
           <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
         </header>
