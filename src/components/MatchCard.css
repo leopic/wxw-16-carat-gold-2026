@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #1a1a2e;
-  border: 1px solid #333;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 8px 10px;
 }
@@ -11,10 +11,10 @@
 .wrestler-btn {
   flex: 1;
   padding: 10px 8px;
-  border: 2px solid #444;
+  border: 2px solid var(--border-light);
   border-radius: 6px;
-  background: #16213e;
-  color: #e0e0e0;
+  background: var(--bg-input);
+  color: var(--text);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -27,8 +27,8 @@
 }
 
 .wrestler-btn:not(:disabled):hover {
-  border-color: #e94560;
-  background: #1a1a3e;
+  border-color: var(--gold);
+  background: #302a20;
 }
 
 .wrestler-btn:not(:disabled):active {
@@ -41,14 +41,14 @@
 }
 
 .wrestler-btn.winner {
-  background: #e94560;
-  border-color: #e94560;
-  color: #fff;
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1c1c1c;
   font-weight: 700;
 }
 
 .vs {
-  color: #666;
+  color: var(--text-dim);
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;

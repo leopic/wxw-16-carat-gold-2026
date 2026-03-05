@@ -1,28 +1,15 @@
 import { useState } from 'react';
-import type { Round2Pairing } from '../types';
+import type { Round2Pairing, PairingSlot } from '../types';
 import './PairingView.css';
 
 type Props = {
   winners: string[];
+  slots: PairingSlot[];
+  onSlotsChange: (slots: PairingSlot[]) => void;
   onConfirm: (pairings: Round2Pairing[]) => void;
 };
 
-type Slot = {
-  winner1: string | null;
-  winner2: string | null;
-};
-
-function emptySlots(): Slot[] {
-  return [
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-  ];
-}
-
-export function PairingView({ winners, onConfirm }: Props) {
-  const [slots, setSlots] = useState<Slot[]>(emptySlots);
+export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
 
   const assigned = new Set(
@@ -43,16 +30,16 @@ export function PairingView({ winners, onConfirm }: Props) {
 
     // If slot is filled, remove the wrestler back to pool
     if (current) {
-      setSlots((prev) =>
-        prev.map((s, i) => (i === slotIdx ? { ...s, [position]: null } : s))
+      onSlotsChange(
+        slots.map((s, i) => (i === slotIdx ? { ...s, [position]: null } : s))
       );
       return;
     }
 
     // If a wrestler is selected, place them
     if (selected) {
-      setSlots((prev) =>
-        prev.map((s, i) => (i === slotIdx ? { ...s, [position]: selected } : s))
+      onSlotsChange(
+        slots.map((s, i) => (i === slotIdx ? { ...s, [position]: selected } : s))
       );
       setSelected(null);
     }

@@ -7,13 +7,13 @@
 .setup-title {
   font-size: 24px;
   font-weight: 700;
-  color: #e94560;
+  color: var(--gold);
   margin: 0 0 4px 0;
   text-align: center;
 }
 
 .setup-subtitle {
-  color: #888;
+  color: var(--text-muted);
   text-align: center;
   margin: 0 0 24px 0;
   font-size: 14px;
@@ -32,7 +32,7 @@
 }
 
 .match-num {
-  color: #555;
+  color: var(--text-dim);
   font-size: 13px;
   font-weight: 600;
   width: 18px;
@@ -43,10 +43,10 @@
 .setup-row input {
   flex: 1;
   padding: 10px 12px;
-  border: 2px solid #333;
+  border: 2px solid var(--border);
   border-radius: 6px;
-  background: #16213e;
-  color: #e0e0e0;
+  background: var(--bg-input);
+  color: var(--text);
   font-size: 14px;
   outline: none;
   transition: border-color 0.15s;
@@ -54,15 +54,15 @@
 }
 
 .setup-row input:focus {
-  border-color: #e94560;
+  border-color: var(--gold);
 }
 
 .setup-row input::placeholder {
-  color: #555;
+  color: var(--text-dim);
 }
 
 .setup-vs {
-  color: #666;
+  color: var(--text-dim);
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -76,8 +76,8 @@
   margin-top: 20px;
   border: none;
   border-radius: 8px;
-  background: #e94560;
-  color: #fff;
+  background: var(--gold);
+  color: #1c1c1c;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;

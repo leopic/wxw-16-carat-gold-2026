@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { TournamentState, Matchup, Round2Pairing } from './types';
+import type { TournamentState, Matchup, Round2Pairing, PairingSlot } from './types';
 import {
   createRound1Matches,
   setRound1Winner,
@@ -47,8 +47,19 @@ function App() {
     setState((prev) => (prev ? setRound1Winner(prev, matchId, winner) : prev));
   };
 
+  const emptySlots: PairingSlot[] = [
+    { winner1: null, winner2: null },
+    { winner1: null, winner2: null },
+    { winner1: null, winner2: null },
+    { winner1: null, winner2: null },
+  ];
+
   const handleGoToPairing = () => {
-    setState((prev) => (prev ? { ...prev, phase: 'pairing' } : prev));
+    setState((prev) => (prev ? { ...prev, phase: 'pairing', pairingSlots: prev.pairingSlots ?? emptySlots } : prev));
+  };
+
+  const handleSlotsChange = (slots: PairingSlot[]) => {
+    setState((prev) => (prev ? { ...prev, pairingSlots: slots } : prev));
   };
 
   const handlePairingsConfirmed = (pairings: Round2Pairing[]) => {
@@ -118,7 +129,12 @@ function App() {
           <h1 className="app-title">wXw 16 Carat Gold 2026</h1>
           <button className="reset-btn" onClick={handleReset}>Reset</button>
         </header>
-        <PairingView winners={winners} onConfirm={handlePairingsConfirmed} />
+        <PairingView
+          winners={winners}
+          slots={state.pairingSlots ?? emptySlots}
+          onSlotsChange={handleSlotsChange}
+          onConfirm={handlePairingsConfirmed}
+        />
       </div>
     );
   }

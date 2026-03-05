@@ -7,7 +7,7 @@ type Props = {
 };
 
 const SEED_MATCHUPS: Matchup[] = [
-  { wrestler1: 'Titus Alexander', wrestler2: 'Ricky Sosa' },
+  { wrestler1: 'Titus Alexander', wrestler2: 'Alan Angels' },
   { wrestler1: 'Arez', wrestler2: 'Peter Tihanyi' },
   { wrestler1: 'Zoltan', wrestler2: 'Bushi' },
   { wrestler1: 'Chihiro Hashimoto', wrestler2: 'Tomas Shire' },

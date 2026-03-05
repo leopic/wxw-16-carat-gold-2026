@@ -15,36 +15,36 @@
 .app-title {
   font-size: 22px;
   font-weight: 700;
-  color: #e94560;
+  color: var(--gold);
   margin: 0;
 }
 
 .reset-btn {
   padding: 6px 14px;
-  border: 1px solid #444;
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   background: transparent;
-  color: #888;
+  color: var(--text-muted);
   font-size: 13px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .reset-btn:hover {
-  border-color: #e94560;
-  color: #e94560;
+  border-color: var(--red);
+  color: var(--red);
 }
 
 .final-section {
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 2px solid #333;
+  border-top: 2px solid var(--border);
 }
 
 .final-label {
   font-size: 18px;
   font-weight: 700;
-  color: #e94560;
+  color: var(--gold);
   margin: 0 0 12px 0;
   text-align: center;
   text-transform: uppercase;
@@ -55,15 +55,16 @@
   text-align: center;
   font-size: 24px;
   font-weight: 700;
-  color: #ffd700;
+  color: var(--gold-bright);
   margin-top: 16px;
   padding: 12px;
-  background: rgba(233, 69, 96, 0.15);
+  background: rgba(212, 164, 74, 0.12);
+  border: 1px solid var(--gold-dim);
   border-radius: 8px;
 }
 
 .phase-subtitle {
-  color: #888;
+  color: var(--text-muted);
   font-size: 14px;
   margin: 0 0 16px 0;
 }

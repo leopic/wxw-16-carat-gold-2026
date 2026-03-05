@@ -7,13 +7,13 @@
 .pairing-title {
   font-size: 24px;
   font-weight: 700;
-  color: #e94560;
+  color: var(--gold);
   margin: 0 0 4px 0;
   text-align: center;
 }
 
 .pairing-subtitle {
-  color: #888;
+  color: var(--text-muted);
   text-align: center;
   margin: 0 0 20px 0;
   font-size: 14px;
@@ -30,10 +30,10 @@
 
 .pool-chip {
   padding: 8px 14px;
-  border: 2px solid #444;
+  border: 2px solid var(--border-light);
   border-radius: 20px;
-  background: #16213e;
-  color: #e0e0e0;
+  background: var(--bg-input);
+  color: var(--text);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -41,17 +41,17 @@
 }
 
 .pool-chip:hover {
-  border-color: #e94560;
+  border-color: var(--gold);
 }
 
 .pool-chip.selected {
-  border-color: #e94560;
-  background: #e94560;
-  color: #fff;
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #1c1c1c;
 }
 
 .pool-empty {
-  color: #555;
+  color: var(--text-dim);
   font-size: 13px;
   font-style: italic;
 }
@@ -64,8 +64,8 @@
 }
 
 .pairing-slot {
-  background: #1a1a2e;
-  border: 1px solid #333;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 12px;
 }
@@ -80,7 +80,7 @@
 .slot-label {
   font-size: 13px;
   font-weight: 600;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .slot-side {
@@ -93,13 +93,13 @@
 }
 
 .left-tag {
-  color: #4ecdc4;
-  background: rgba(78, 205, 196, 0.15);
+  color: var(--gold-bright);
+  background: rgba(212, 164, 74, 0.15);
 }
 
 .right-tag {
-  color: #ff6b6b;
-  background: rgba(255, 107, 107, 0.15);
+  color: var(--gold-bright);
+  background: rgba(212, 164, 74, 0.15);
 }
 
 .slot-row {
@@ -111,10 +111,10 @@
 .slot-btn {
   flex: 1;
   padding: 10px 8px;
-  border: 2px dashed #444;
+  border: 2px dashed var(--border-light);
   border-radius: 6px;
   background: transparent;
-  color: #555;
+  color: var(--text-dim);
   font-size: 13px;
   cursor: pointer;
   transition: all 0.15s;
@@ -126,21 +126,21 @@
 }
 
 .slot-btn.ready {
-  border-color: #e94560;
-  color: #e94560;
+  border-color: var(--gold);
+  color: var(--gold);
   border-style: dashed;
 }
 
 .slot-btn.filled {
   border-style: solid;
-  border-color: #4ecdc4;
-  background: rgba(78, 205, 196, 0.1);
-  color: #e0e0e0;
+  border-color: var(--gold-dim);
+  background: rgba(212, 164, 74, 0.1);
+  color: var(--text);
   font-weight: 500;
 }
 
 .slot-vs {
-  color: #666;
+  color: var(--text-dim);
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
