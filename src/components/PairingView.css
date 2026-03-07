@@ -53,6 +53,10 @@
   color: var(--gold-contrast);
 }
 
+.pool-chip.dragging {
+  opacity: 0.3;
+}
+
 .pool-empty {
   color: var(--text-dim);
   font-size: 0.8125rem;
@@ -144,6 +148,24 @@
   background: var(--gold-overlay-light);
   color: var(--text);
   font-weight: 500;
+}
+
+.slot-btn.drop-over {
+  border-color: var(--gold);
+  background: var(--gold-overlay-mid);
+  border-style: solid;
+}
+
+.slot-btn.dragging {
+  opacity: 0.3;
+}
+
+.drag-overlay {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--gold-contrast);
+  cursor: grabbing;
+  pointer-events: none;
 }
 
 .slot-vs {
