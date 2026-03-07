@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { Matchup, TournamentState, Round2Pairing, PairingSlot } from './types';
-import { createRound1Matches, allRound1Complete, getRound1Winners } from './bracket';
+import { allRound1Complete, getRound1Winners } from './bracket';
 import {
   setupTournament,
   pickRound1Winner,

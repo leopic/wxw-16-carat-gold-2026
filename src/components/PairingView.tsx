@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import type { Round2Pairing, PairingSlot } from '../types';
 import { t } from '../i18n';
+import { usePairingView } from '../hooks/usePairingView';
 import './PairingView.css';
 
 type Props = {
@@ -13,52 +13,14 @@ type Props = {
 };
 
 export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode, onSwap }: Props) {
-  const [selected, setSelected] = useState<string | null>(null);
-
-  const assigned = new Set(
-    slots.flatMap((s) => [s.winner1, s.winner2].filter(Boolean))
-  );
-  const available = winners.filter((w) => !assigned.has(w));
-
-  const handleWinnerTap = (name: string) => {
-    if (selected === name) {
-      setSelected(null);
-      return;
-    }
-    setSelected(name);
-  };
-
-  const handleSlotTap = (slotIdx: number, position: 'winner1' | 'winner2') => {
-    const current = slots[slotIdx][position];
-
-    // If slot is filled, remove the wrestler back to pool
-    if (current) {
-      onSlotsChange(
-        slots.map((s, i) => (i === slotIdx ? { ...s, [position]: null } : s))
-      );
-      return;
-    }
-
-    // If a wrestler is selected, place them
-    if (selected) {
-      onSlotsChange(
-        slots.map((s, i) => (i === slotIdx ? { ...s, [position]: selected } : s))
-      );
-      setSelected(null);
-    }
-  };
-
-  const allFilled = slots.every((s) => s.winner1 && s.winner2);
-
-  const handleConfirm = () => {
-    if (!allFilled) return;
-    onConfirm(
-      slots.map((s) => ({
-        winner1: s.winner1!,
-        winner2: s.winner2!,
-      }))
-    );
-  };
+  const {
+    selected,
+    available,
+    allFilled,
+    handleWinnerTap,
+    handleSlotTap,
+    handleConfirm,
+  } = usePairingView(slots, winners, onSlotsChange, onConfirm, swapMode, onSwap);
 
   return (
     <div className="pairing-view">
@@ -70,12 +32,12 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
           <button
             key={w}
             className={`pool-chip ${selected === w ? 'selected' : ''} ${swapMode ? 'swap-target' : ''}`}
-            onClick={() => swapMode && onSwap ? onSwap(w) : handleWinnerTap(w)}
+            onClick={() => handleWinnerTap(w)}
           >
             {w}
           </button>
         ))}
-        {available.length === 0 && assigned.size < winners.length && (
+        {available.length === 0 && winners.length > 0 && (
           <span className="pool-empty">{t('allPlaced')}</span>
         )}
       </div>
@@ -96,7 +58,7 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
                   !slot.winner1 && selected ? 'ready' : '',
                   swapMode && slot.winner1 ? 'swap-target' : '',
                 ].filter(Boolean).join(' ')}
-                onClick={() => swapMode && onSwap && slot.winner1 ? onSwap(slot.winner1) : handleSlotTap(i, 'winner1')}
+                onClick={() => handleSlotTap(i, 'winner1')}
               >
                 {slot.winner1 ?? t('tapToPlace')}
               </button>
@@ -108,7 +70,7 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
                   !slot.winner2 && selected ? 'ready' : '',
                   swapMode && slot.winner2 ? 'swap-target' : '',
                 ].filter(Boolean).join(' ')}
-                onClick={() => swapMode && onSwap && slot.winner2 ? onSwap(slot.winner2) : handleSlotTap(i, 'winner2')}
+                onClick={() => handleSlotTap(i, 'winner2')}
               >
                 {slot.winner2 ?? t('tapToPlace')}
               </button>
