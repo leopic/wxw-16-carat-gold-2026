@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Matchup } from '../types';
 import { t } from '../i18n';
+import { AppMenu } from './AppMenu';
 import './SetupView.css';
 
 type Props = {
@@ -41,7 +42,12 @@ export function SetupView({ onStart }: Props) {
 
   return (
     <div className="setup-view">
-      <h1 className="setup-title">{t('setupTitle')}</h1>
+      <header className="app-header">
+        <div className="back-btn-placeholder" />
+        <h1 className="app-title">{t('appTitle')}</h1>
+        <AppMenu />
+      </header>
+      <h2 className="setup-title">{t('setupTitle')}</h2>
       <p className="setup-subtitle">{t('setupSubtitle')}</p>
 
       <div className="setup-matches">

@@ -20,6 +20,8 @@ type Props = {
   slots: PairingSlot[];
   onSlotsChange: (slots: PairingSlot[]) => void;
   onConfirm: (pairings: Round2Pairing[]) => void;
+  swapMode?: boolean;
+  onSwap?: (wrestler: string) => void;
 };
 
 type DragData = {
@@ -27,7 +29,7 @@ type DragData = {
   source: 'pool' | { slotIdx: number; position: 'winner1' | 'winner2' };
 };
 
-function PoolChip({ name, isSelected, onTap }: { name: string; isSelected: boolean; onTap: () => void }) {
+function PoolChip({ name, isSelected, isSwapTarget, onTap }: { name: string; isSelected: boolean; isSwapTarget: boolean; onTap: () => void }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `pool-${name}`,
     data: { name, source: 'pool' } satisfies DragData,
@@ -36,7 +38,7 @@ function PoolChip({ name, isSelected, onTap }: { name: string; isSelected: boole
   return (
     <button
       ref={setNodeRef}
-      className={`pool-chip ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''}`}
+      className={`pool-chip ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''} ${isSwapTarget ? 'swap-target' : ''}`}
       onClick={onTap}
       {...listeners}
       {...attributes}
@@ -51,12 +53,14 @@ function SlotButton({
   slotIdx,
   position,
   isReady,
+  isSwapTarget,
   onTap,
 }: {
   name: string | null;
   slotIdx: number;
   position: 'winner1' | 'winner2';
   isReady: boolean;
+  isSwapTarget: boolean;
   onTap: () => void;
 }) {
   const droppableId = `slot-${slotIdx}-${position}`;
@@ -78,6 +82,7 @@ function SlotButton({
         isReady ? 'ready' : '',
         isOver ? 'drop-over' : '',
         isDragging ? 'dragging' : '',
+        isSwapTarget ? 'swap-target' : '',
       ].filter(Boolean).join(' ')}
       onClick={onTap}
       {...listeners}
@@ -88,7 +93,7 @@ function SlotButton({
   );
 }
 
-export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props) {
+export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode, onSwap }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [activeData, setActiveData] = useState<DragData | null>(null);
 
@@ -194,7 +199,8 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
               key={w}
               name={w}
               isSelected={selected === w}
-              onTap={() => handleWinnerTap(w)}
+              isSwapTarget={!!swapMode}
+              onTap={() => swapMode && onSwap ? onSwap(w) : handleWinnerTap(w)}
             />
           ))}
           {available.length === 0 && assigned.size < winners.length && (
@@ -216,7 +222,8 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
                   slotIdx={i}
                   position="winner1"
                   isReady={!slot.winner1 && !!selected}
-                  onTap={() => handleSlotTap(i, 'winner1')}
+                  isSwapTarget={!!swapMode && !!slot.winner1}
+                  onTap={() => swapMode && onSwap && slot.winner1 ? onSwap(slot.winner1) : handleSlotTap(i, 'winner1')}
                 />
                 <span className="slot-vs">{t('vs')}</span>
                 <SlotButton
@@ -224,7 +231,8 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm }: Props)
                   slotIdx={i}
                   position="winner2"
                   isReady={!slot.winner2 && !!selected}
-                  onTap={() => handleSlotTap(i, 'winner2')}
+                  isSwapTarget={!!swapMode && !!slot.winner2}
+                  onTap={() => swapMode && onSwap && slot.winner2 ? onSwap(slot.winner2) : handleSlotTap(i, 'winner2')}
                 />
               </div>
             </div>

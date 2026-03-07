@@ -34,4 +34,6 @@ export type TournamentState = {
   pairingSlots?: PairingSlot[];  // in-progress pairing work (4 slots)
   round2Pairings?: Round2Pairing[]; // 4 pairings (first 2 = left, last 2 = right)
   bracket?: Bracket;             // full bracket once pairings are set
+  backup?: string;               // backup wrestler who can sub in from round 2
+  backupUsed?: boolean;           // true after the backup has been swapped in
 };

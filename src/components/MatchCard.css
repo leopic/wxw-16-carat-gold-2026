@@ -46,6 +46,19 @@
   opacity: 0.5;
 }
 
+.wrestler-btn.swap-target {
+  border-color: var(--red);
+  border-style: dashed;
+  cursor: pointer;
+  opacity: 1;
+  animation: swap-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes swap-pulse {
+  0%, 100% { border-color: var(--red); }
+  50% { border-color: transparent; }
+}
+
 .wrestler-btn.winner {
   background: var(--gold);
   border-color: var(--gold);

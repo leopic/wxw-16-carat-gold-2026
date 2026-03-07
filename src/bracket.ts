@@ -162,6 +162,27 @@ function clearDownstream(bracket: Bracket, side: 'left' | 'right', roundIdx: num
   }
 }
 
+export function swapWrestler(bracket: Bracket, target: string, replacement: string): Bracket {
+  const b = deepClone(bracket);
+
+  const swapMatch = (m: Match) => {
+    if (m.wrestler1 === target) m.wrestler1 = replacement;
+    if (m.wrestler2 === target) m.wrestler2 = replacement;
+    if (m.winner === target) m.winner = replacement;
+  };
+
+  for (const side of ['left', 'right'] as const) {
+    for (const round of b[side]) {
+      for (const match of round) {
+        swapMatch(match);
+      }
+    }
+  }
+  swapMatch(b.final);
+
+  return b;
+}
+
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }

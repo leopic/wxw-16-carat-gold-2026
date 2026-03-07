@@ -7,6 +7,7 @@ import {
   getRound1Winners,
   buildBracketFromPairings,
   setWinner,
+  swapWrestler,
 } from './bracket';
 import { t } from './i18n';
 import { SetupView } from './components/SetupView';
@@ -14,6 +15,7 @@ import { PairingView } from './components/PairingView';
 import { BracketView } from './components/BracketView';
 import { MatchCard } from './components/MatchCard';
 import { ChampionAlert } from './components/ChampionAlert';
+import { AppMenu } from './components/AppMenu';
 import './App.css';
 
 const STORAGE_KEY = 'wxw-tournament';
@@ -33,6 +35,7 @@ function saveState(state: TournamentState) {
 
 function App() {
   const [state, setState] = useState<TournamentState | null>(loadState);
+  const [swapMode, setSwapMode] = useState(false);
 
   useEffect(() => {
     if (state) saveState(state);
@@ -104,6 +107,58 @@ function App() {
     }
   };
 
+  const handleBackupChange = (name: string) => {
+    setState((prev) => (prev ? { ...prev, backup: name || undefined } : prev));
+  };
+
+  const handleSwap = (target: string) => {
+    if (!state?.backup) return;
+    const replacement = state.backup;
+
+    setState((prev) => {
+      if (!prev?.backup) return prev;
+
+      // Replace in round1 match winners
+      const round1Matches = prev.round1Matches.map((m) => ({
+        ...m,
+        wrestler1: m.wrestler1 === target ? replacement : m.wrestler1,
+        wrestler2: m.wrestler2 === target ? replacement : m.wrestler2,
+        winner: m.winner === target ? replacement : m.winner,
+      }));
+
+      // Replace in pairing slots
+      const pairingSlots = prev.pairingSlots?.map((s) => ({
+        winner1: s.winner1 === target ? replacement : s.winner1,
+        winner2: s.winner2 === target ? replacement : s.winner2,
+      }));
+
+      // Replace in bracket if it exists
+      const bracket = prev.bracket
+        ? swapWrestler(prev.bracket, target, replacement)
+        : prev.bracket;
+
+      return { ...prev, round1Matches, pairingSlots, bracket, backupUsed: true };
+    });
+    setSwapMode(false);
+  };
+
+  const hasBackup = !!state?.backup;
+
+  const header = (
+    <header className="app-header">
+      <button className="back-btn" onClick={handleBack}>{t('back')}</button>
+      <h1 className="app-title">{t('appTitle')}</h1>
+      <AppMenu hasBackup={hasBackup} backupUsed={state?.backupUsed} onInjurySub={() => setSwapMode(true)} onReset={handleReset} />
+    </header>
+  );
+
+  const swapBar = state?.backup && swapMode ? (
+    <div className="swap-bar">
+      <span className="swap-instruction">{t('swapInstruction').replace('{name}', state.backup)}</span>
+      <button className="swap-cancel-btn" onClick={() => setSwapMode(false)}>{t('swapCancel')}</button>
+    </div>
+  ) : null;
+
   // No state yet — show setup
   if (!state) {
     return <SetupView onStart={handleSetup} />;
@@ -114,17 +169,25 @@ function App() {
     const r1Done = allRound1Complete(state.round1Matches);
     return (
       <div className="app">
-        <header className="app-header">
-          <button className="back-btn" onClick={handleBack}>{t('back')}</button>
-          <h1 className="app-title">{t('appTitle')}</h1>
-          <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
-        </header>
+        {header}
         <p className="phase-subtitle">{t('pickWinner')}</p>
 
         <div className="round1-grid">
           {state.round1Matches.map((match) => (
             <MatchCard key={match.id} match={match} onPickWinner={handleRound1Pick} />
           ))}
+        </div>
+
+        <div className="backup-section">
+          <label className="backup-label" htmlFor="backup-input">{t('backupLabel')}</label>
+          <input
+            id="backup-input"
+            className="backup-input"
+            type="text"
+            placeholder={t('backupPlaceholder')}
+            value={state.backup ?? ''}
+            onChange={(e) => handleBackupChange(e.target.value)}
+          />
         </div>
 
         {r1Done && (
@@ -141,16 +204,15 @@ function App() {
     const winners = getRound1Winners(state.round1Matches);
     return (
       <div className="app">
-        <header className="app-header">
-          <button className="back-btn" onClick={handleBack}>{t('back')}</button>
-          <h1 className="app-title">{t('appTitle')}</h1>
-          <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
-        </header>
+        {header}
+        {swapBar}
         <PairingView
           winners={winners}
           slots={state.pairingSlots ?? emptySlots}
           onSlotsChange={handleSlotsChange}
           onConfirm={handlePairingsConfirmed}
+          swapMode={swapMode}
+          onSwap={handleSwap}
         />
       </div>
     );
@@ -160,20 +222,17 @@ function App() {
   const bracket = state.bracket!;
   return (
     <div className="app">
-      <header className="app-header">
-        <button className="back-btn" onClick={handleBack}>{t('back')}</button>
-        <h1 className="app-title">{t('appTitle')}</h1>
-        <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
-      </header>
+      {header}
+      {swapBar}
 
       <div className="final-section">
         <h2 className="final-label">{t('championshipFinal')}</h2>
-        <MatchCard match={bracket.final} onPickWinner={handleBracketPick} />
+        <MatchCard match={bracket.final} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
         <ChampionAlert winner={bracket.final.winner} />
       </div>
 
-      <BracketView label={t('leftBracket')} rounds={bracket.left} onPickWinner={handleBracketPick} />
-      <BracketView label={t('rightBracket')} rounds={bracket.right} onPickWinner={handleBracketPick} />
+      <BracketView label={t('leftBracket')} rounds={bracket.left} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
+      <BracketView label={t('rightBracket')} rounds={bracket.right} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
     </div>
   );
 }

@@ -7,9 +7,11 @@ type Props = {
   label: string;
   rounds: Match[][];
   onPickWinner: (matchId: string, winner: string) => void;
+  swapMode?: boolean;
+  onSwap?: (wrestler: string) => void;
 };
 
-export function BracketView({ label, rounds, onPickWinner }: Props) {
+export function BracketView({ label, rounds, onPickWinner, swapMode, onSwap }: Props) {
   const roundLabels = [t('round1'), t('quarterfinals'), t('semifinal')];
   const lastRoundIdx = rounds.length - 1;
 
@@ -25,12 +27,12 @@ export function BracketView({ label, rounds, onPickWinner }: Props) {
                 ? chunk(round, 2).map((pair, pairIdx) => (
                     <div key={pairIdx} className="match-pair">
                       {pair.map((match) => (
-                        <MatchCard key={match.id} match={match} onPickWinner={onPickWinner} />
+                        <MatchCard key={match.id} match={match} onPickWinner={onPickWinner} swapMode={swapMode} onSwap={onSwap} />
                       ))}
                     </div>
                   ))
                 : round.map((match) => (
-                    <MatchCard key={match.id} match={match} onPickWinner={onPickWinner} />
+                    <MatchCard key={match.id} match={match} onPickWinner={onPickWinner} swapMode={swapMode} onSwap={onSwap} />
                   ))}
             </div>
           </div>
