@@ -22,6 +22,9 @@ const strings = {
     leftBracket: 'Left Bracket',
     rightBracket: 'Right Bracket',
     championshipFinal: 'Championship Final',
+    championTrophy: '\ud83c\udfc6',
+    championAlert: '{name} wins the 16 Carat Gold Tournament!',
+    championDismiss: 'Close',
     // Pairing
     pairingTitle: 'Night 2 Pairings',
     pairingSubtitle: 'Tap a winner below, then tap a slot to place them. First 2 matches = left bracket, last 2 = right bracket.',
@@ -55,6 +58,9 @@ const strings = {
     leftBracket: 'Linke Seite',
     rightBracket: 'Rechte Seite',
     championshipFinal: 'Finale',
+    championTrophy: '\ud83c\udfc6',
+    championAlert: '{name} gewinnt das 16 Carat Gold Turnier!',
+    championDismiss: 'Schlie\u00dfen',
     // Pairing
     pairingTitle: 'Abend 2 – Paarungen',
     pairingSubtitle: 'Tippe auf einen Gewinner und dann auf einen Platz. Die ersten 2 Kämpfe = linke Seite, die letzten 2 = rechte Seite.',
@@ -88,6 +94,9 @@ const strings = {
     leftBracket: 'Lado Izquierdo',
     rightBracket: 'Lado Derecho',
     championshipFinal: 'Gran Final',
+    championTrophy: '\ud83c\udfc6',
+    championAlert: '\u00a1{name} gana el torneo 16 Carat Gold!',
+    championDismiss: 'Cerrar',
     // Pairing
     pairingTitle: 'Noche 2 – Combates',
     pairingSubtitle: 'Toca un ganador y luego un espacio para colocarlo. Los primeros 2 combates = lado izquierdo, los últimos 2 = lado derecho.',

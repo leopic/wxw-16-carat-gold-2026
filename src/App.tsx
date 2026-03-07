@@ -13,7 +13,7 @@ import { SetupView } from './components/SetupView';
 import { PairingView } from './components/PairingView';
 import { BracketView } from './components/BracketView';
 import { MatchCard } from './components/MatchCard';
-import { ChampionBanner } from './components/ChampionBanner';
+import { ChampionAlert } from './components/ChampionAlert';
 import './App.css';
 
 const STORAGE_KEY = 'wxw-tournament';
@@ -166,16 +166,14 @@ function App() {
         <button className="reset-btn" onClick={handleReset}>{t('reset')}</button>
       </header>
 
-      <BracketView label={t('leftBracket')} rounds={bracket.left} onPickWinner={handleBracketPick} />
-      <BracketView label={t('rightBracket')} rounds={bracket.right} onPickWinner={handleBracketPick} />
-
       <div className="final-section">
         <h2 className="final-label">{t('championshipFinal')}</h2>
         <MatchCard match={bracket.final} onPickWinner={handleBracketPick} />
-        {bracket.final.winner && (
-          <ChampionBanner winner={bracket.final.winner} />
-        )}
+        <ChampionAlert winner={bracket.final.winner} />
       </div>
+
+      <BracketView label={t('leftBracket')} rounds={bracket.left} onPickWinner={handleBracketPick} />
+      <BracketView label={t('rightBracket')} rounds={bracket.right} onPickWinner={handleBracketPick} />
     </div>
   );
 }
