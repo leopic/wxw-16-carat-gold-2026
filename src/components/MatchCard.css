@@ -18,7 +18,6 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
   text-align: center;
   min-width: 0;
   min-height: 2.75rem;
@@ -28,15 +27,18 @@
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.wrestler-btn:not(:disabled):hover {
-  border-color: var(--gold);
-  background: var(--bg-hover);
-}
+@media (hover: hover) {
+  .wrestler-btn:not(:disabled):hover {
+    border-color: var(--gold);
+    background: var(--bg-hover);
+  }
 
-.wrestler-btn:not(:disabled):active {
-  transform: scale(0.97);
+  .wrestler-btn:not(:disabled):active {
+    transform: scale(0.97);
+  }
 }
 
 .wrestler-btn:disabled {
