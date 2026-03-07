@@ -9,20 +9,24 @@ type Props = {
 
 export function ChampionAlert({ winner }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const firedRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!winner || firedRef.current === winner) return;
     firedRef.current = winner;
 
-    confetti({
-      particleCount: 150,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: ['#d4a44a', '#f0c850', '#a07830', '#fff4d0'],
-    });
-
     dialogRef.current?.showModal();
+
+    if (canvasRef.current) {
+      const fire = confetti.create(canvasRef.current, { resize: true });
+      fire({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.7 },
+        colors: ['#d4a44a', '#f0c850', '#a07830', '#fff4d0'],
+      });
+    }
   }, [winner]);
 
   if (!winner) return null;
@@ -31,6 +35,7 @@ export function ChampionAlert({ winner }: Props) {
     <dialog ref={dialogRef} className="champion-dialog" onClick={(e) => {
       if (e.target === e.currentTarget) e.currentTarget.close();
     }}>
+      <canvas ref={canvasRef} className="champion-dialog-confetti" />
       <div className="champion-dialog-content">
         <p className="champion-dialog-trophy">{t('championTrophy')}</p>
         <p className="champion-dialog-name">{winner}</p>
