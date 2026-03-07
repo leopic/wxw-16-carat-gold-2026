@@ -53,10 +53,6 @@
   color: var(--gold-contrast);
 }
 
-.pool-chip.dragging {
-  opacity: 0.3;
-}
-
 .pool-chip.swap-target {
   border-color: var(--red);
   border-style: dashed;
@@ -161,28 +157,10 @@
   font-weight: 500;
 }
 
-.slot-btn.drop-over {
-  border-color: var(--gold);
-  background: var(--gold-overlay-mid);
-  border-style: solid;
-}
-
-.slot-btn.dragging {
-  opacity: 0.3;
-}
-
 .slot-btn.swap-target {
   border-color: var(--red);
   border-style: dashed;
   animation: swap-pulse 1.2s ease-in-out infinite;
-}
-
-.drag-overlay {
-  border-color: var(--gold);
-  background: var(--gold);
-  color: var(--gold-contrast);
-  cursor: grabbing;
-  pointer-events: none;
 }
 
 .slot-vs {
