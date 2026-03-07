@@ -20,6 +20,27 @@ import './App.css';
 
 const STORAGE_KEY = 'wxw-tournament';
 
+const NIGHT2_DEFAULT: TournamentState = {
+  phase: 'pairing',
+  round1Matches: [
+    { id: 'r1-m0', wrestler1: 'YAMATO', wrestler2: 'Axel Tischer', winner: 'YAMATO' },
+    { id: 'r1-m1', wrestler1: 'Peter Tihanyi', wrestler2: 'Arez', winner: 'Peter Tihanyi' },
+    { id: 'r1-m2', wrestler1: 'Chihiro Hashimoto', wrestler2: 'Thomas Shire', winner: 'Thomas Shire' },
+    { id: 'r1-m3', wrestler1: 'Ahura', wrestler2: "Dennis 'Cash' Dullnig", winner: 'Ahura' },
+    { id: 'r1-m4', wrestler1: 'Dieter Schwartz', wrestler2: 'Tetsuya Naito', winner: 'Tetsuya Naito' },
+    { id: 'r1-m5', wrestler1: 'Bobby Gunns', wrestler2: 'Erick Stevens', winner: 'Erick Stevens' },
+    { id: 'r1-m6', wrestler1: 'Alan Angels', wrestler2: 'Titus Alexander', winner: 'Alan Angels' },
+    { id: 'r1-m7', wrestler1: 'Zoltan', wrestler2: 'Bushi', winner: 'Zoltan' },
+  ],
+  pairingSlots: [
+    { winner1: null, winner2: null },
+    { winner1: null, winner2: null },
+    { winner1: null, winner2: null },
+    { winner1: null, winner2: null },
+  ],
+  backup: 'Jay Joshua',
+};
+
 function loadState(): TournamentState | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -34,7 +55,7 @@ function saveState(state: TournamentState) {
 }
 
 function App() {
-  const [state, setState] = useState<TournamentState | null>(loadState);
+  const [state, setState] = useState<TournamentState | null>(() => loadState() ?? NIGHT2_DEFAULT);
   const [swapMode, setSwapMode] = useState(false);
 
   useEffect(() => {

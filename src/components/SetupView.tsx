@@ -9,10 +9,10 @@ type Props = {
 };
 
 const SEED_MATCHUPS: Matchup[] = [
-  { wrestler1: 'Yamato', wrestler2: 'Axel Tischer' },
+  { wrestler1: 'YAMATO', wrestler2: 'Axel Tischer' },
   { wrestler1: 'Peter Tihanyi', wrestler2: 'Arez' },
-  { wrestler1: 'Chihiro Hashimoto', wrestler2: 'Tomas Shire' },
-  { wrestler1: 'Ahura', wrestler2:  "Dennis 'Cash' Dullnig"},
+  { wrestler1: 'Chihiro Hashimoto', wrestler2: 'Thomas Shire' },
+  { wrestler1: 'Ahura', wrestler2: "Dennis 'Cash' Dullnig" },
   { wrestler1: 'Dieter Schwartz', wrestler2: 'Tetsuya Naito' },
   { wrestler1: 'Bobby Gunns', wrestler2: 'Erick Stevens' },
   { wrestler1: 'Alan Angels', wrestler2: 'Titus Alexander' },
