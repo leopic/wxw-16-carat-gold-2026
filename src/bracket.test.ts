@@ -6,6 +6,7 @@ import {
   allRound1Complete,
   buildBracketFromPairings,
   setWinner,
+  swapWrestler,
 } from './bracket';
 import type { Matchup, TournamentState, Round2Pairing } from './types';
 
@@ -177,5 +178,50 @@ describe('setWinner', () => {
     expect(b.left[2][0].wrestler1).toBe('C');
     expect(b.left[2][0].winner).toBeNull();
     expect(b.final.wrestler1).toBeNull();
+  });
+});
+
+describe('swapWrestler', () => {
+  it('replaces wrestler in R1 matches', () => {
+    const { bracket } = makeBracket();
+    const b = swapWrestler(bracket, 'A', 'Z');
+    expect(b.left[0][0].wrestler1).toBe('Z');
+    expect(b.left[0][0].winner).toBe('Z');
+  });
+
+  it('replaces wrestler in R2 matches', () => {
+    const { bracket } = makeBracket();
+    const b = swapWrestler(bracket, 'A', 'Z');
+    expect(b.left[1][0].wrestler1).toBe('Z');
+  });
+
+  it('replaces wrestler in semifinal and final', () => {
+    const { bracket } = makeBracket();
+    let b = setWinner(bracket, 'L-r2-m0', 'A');
+    b = setWinner(b, 'L-r2-m1', 'E');
+    b = setWinner(b, 'L-r3-m0', 'A');
+    b = setWinner(b, 'R-r2-m0', 'I');
+    b = setWinner(b, 'R-r2-m1', 'M');
+    b = setWinner(b, 'R-r3-m0', 'I');
+    b = setWinner(b, 'final', 'A');
+
+    const swapped = swapWrestler(b, 'A', 'Z');
+    expect(swapped.left[2][0].wrestler1).toBe('Z');
+    expect(swapped.left[2][0].winner).toBe('Z');
+    expect(swapped.final.wrestler1).toBe('Z');
+    expect(swapped.final.winner).toBe('Z');
+  });
+
+  it('does not modify original bracket', () => {
+    const { bracket } = makeBracket();
+    swapWrestler(bracket, 'A', 'Z');
+    expect(bracket.left[0][0].wrestler1).toBe('A');
+  });
+
+  it('handles wrestler not in bracket (no-op)', () => {
+    const { bracket } = makeBracket();
+    const b = swapWrestler(bracket, 'NOBODY', 'Z');
+    expect(b.left[0][0].wrestler1).toBe('A');
+    expect(b.right[0][0].wrestler1).toBe('I');
   });
 });
