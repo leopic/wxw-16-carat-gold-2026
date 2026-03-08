@@ -1,0 +1,42 @@
+/* wXw 16 Carat Gold 2027 — gold & cyan on navy */
+:root {
+  --gold: #c9a84c;
+  --gold-bright: #e8c75a;
+  --gold-dim: #9a7a30;
+  --gold-contrast: #12122a;
+  --bg: #12122a;
+  --bg-card: #1c1c38;
+  --bg-input: #22223e;
+  --bg-hover: #282845;
+  --border: #2e2e52;
+  --border-light: #3e3e62;
+  --text: #e4e2ec;
+  --text-muted: #8886a0;
+  --text-dim: #585672;
+  --red: #c42b2b;
+  --gold-overlay: rgba(201, 168, 76, 0.12);
+  --gold-overlay-light: rgba(201, 168, 76, 0.1);
+  --gold-overlay-mid: rgba(201, 168, 76, 0.15);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --gold: #a08230;
+    --gold-bright: #8a7028;
+    --gold-dim: #c0a04a;
+    --gold-contrast: #fff;
+    --bg: #f0eff5;
+    --bg-card: #e4e3ed;
+    --bg-input: #dcdae6;
+    --bg-hover: #e8e4f0;
+    --border: #c8c6d4;
+    --border-light: #b8b6c4;
+    --text: #1a1a2e;
+    --text-muted: #5a5872;
+    --text-dim: #8886a0;
+    --red: #b82525;
+    --gold-overlay: rgba(160, 130, 48, 0.1);
+    --gold-overlay-light: rgba(160, 130, 48, 0.08);
+    --gold-overlay-mid: rgba(160, 130, 48, 0.12);
+  }
+}

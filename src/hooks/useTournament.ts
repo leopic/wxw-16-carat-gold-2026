@@ -15,7 +15,7 @@ import {
   performSwap,
 } from '../tournament';
 import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners, createRound1Matches, buildBracketFromPairings, setWinner } from '../bracket';
-import { SEED_MATCHUPS, NIGHT1_WINNERS, NIGHT2_QF_PAIRINGS, NIGHT2_QF_WINNERS, BACKUP_WRESTLER } from '../edition';
+import { SEED_MATCHUPS, NIGHT1_WINNERS, NIGHT2_QF_PAIRINGS, NIGHT2_QF_WINNERS, BACKUP_WRESTLER } from '../edition-2026';
 
 const STORAGE_KEY = 'wxw-tournament';
 

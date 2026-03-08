@@ -1,4 +1,4 @@
-import { EDITION_TITLE } from './edition';
+import { EDITION_TITLE } from './edition-2026';
 
 const strings = {
   en: {

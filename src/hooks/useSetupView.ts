@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Matchup } from '../types';
-import { SEED_MATCHUPS } from '../edition';
+import { SEED_MATCHUPS } from '../edition-2026';
 
 export function useSetupView(onStart: (matchups: Matchup[]) => void) {
   const [matchups, setMatchups] = useState<Matchup[]>(SEED_MATCHUPS);

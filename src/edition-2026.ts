@@ -30,3 +30,15 @@ export const NIGHT2_QF_PAIRINGS: Round2Pairing[] = [
 export const NIGHT2_QF_WINNERS = ['YAMATO', 'Thomas Shire', 'Peter Tihanyi', 'Ahura'];
 
 export const BACKUP_WRESTLER = 'Jay Joshua';
+
+/** Friday of the tournament weekend (Sat = Night 2, Sun = Night 3). */
+export const NIGHT1_DATE = new Date(2026, 2, 6); // March 6, 2026
+
+export function isTournamentOver(): boolean {
+  const now = new Date();
+  // Monday after the tournament weekend (day after Night 3)
+  const monday = new Date(NIGHT1_DATE);
+  monday.setDate(monday.getDate() + 3);
+  monday.setHours(0, 0, 0, 0);
+  return now >= monday;
+}
