@@ -172,6 +172,21 @@ export function fillSemifinals(
   return b;
 }
 
+export function clearSemifinals(bracket: Bracket): Bracket {
+  const b = deepClone(bracket);
+  for (const match of b.rounds[SF_ROUND_IDX]) {
+    match.wrestler1 = null;
+    match.wrestler2 = null;
+    match.winner = null;
+  }
+  for (const match of b.rounds[SF_ROUND_IDX + 1]) {
+    match.wrestler1 = null;
+    match.wrestler2 = null;
+    match.winner = null;
+  }
+  return b;
+}
+
 export function swapWrestler(bracket: Bracket, target: string, replacement: string): Bracket {
   const b = deepClone(bracket);
 

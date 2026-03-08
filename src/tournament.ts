@@ -5,6 +5,7 @@ import {
   buildBracketFromPairings,
   setWinner as bracketSetWinner,
   fillSemifinals,
+  clearSemifinals,
   swapWrestler,
 } from './bracket';
 
@@ -91,10 +92,15 @@ export function confirmSfPairings(state: TournamentState): TournamentState {
 export function goBack(state: TournamentState): TournamentState | null {
   if (state.phase === 'round1') return null;
   if (state.phase === 'pairing') return { ...state, phase: 'round1' };
-  if (state.phase === 'sfPairing') return { ...state, phase: 'bracket' };
+  if (state.phase === 'sfPairing') {
+    // Clear SF data from bracket so we're back at the QF view
+    const bracket = state.bracket ? clearSemifinals(state.bracket) : state.bracket;
+    return { ...state, phase: 'bracket', bracket };
+  }
   if (state.phase === 'bracket') {
-    // If SF pairings were set, go back to sfPairing; otherwise to pairing
-    if (state.sfPairingSlots) return { ...state, phase: 'sfPairing' };
+    // If SFs are filled in the bracket, go back to sfPairing
+    const sfSet = state.bracket?.rounds[2][0].wrestler1 !== null;
+    if (sfSet) return { ...state, phase: 'sfPairing' };
     return { ...state, phase: 'pairing' };
   }
   return state;

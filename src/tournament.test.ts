@@ -247,19 +247,42 @@ describe('goBack', () => {
     expect(back.round1Matches).toHaveLength(8);
   });
 
-  it('from sfPairing goes to bracket', () => {
-    const state = goToSfPairing(makeBracketState());
-    const back = goBack(state)!;
-    expect(back.phase).toBe('bracket');
-  });
-
-  it('from bracket with sfPairingSlots goes to sfPairing', () => {
+  it('from sfPairing goes to bracket with SFs cleared', () => {
     let state = makeBracketState();
+    state = pickBracketWinner(state, 'qf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
     state = goToSfPairing(state);
-    state = confirmSfPairings({ ...state, sfPairingSlots: [
+    state = updateSfPairingSlots(state, [
       { winner1: 'A', winner2: 'E', winner: null },
       { winner1: 'I', winner2: 'M', winner: null },
-    ]});
+    ]);
+    state = confirmSfPairings(state);
+    // Now go back to sfPairing, then back to bracket
+    const sfPairing = goBack(state)!;
+    expect(sfPairing.phase).toBe('sfPairing');
+    const bracket = goBack(sfPairing)!;
+    expect(bracket.phase).toBe('bracket');
+    // SFs should be cleared
+    expect(bracket.bracket!.rounds[2][0].wrestler1).toBeNull();
+    // Back from bracket (no SFs) goes to pairing
+    const pairing = goBack(bracket)!;
+    expect(pairing.phase).toBe('pairing');
+  });
+
+  it('from bracket with SFs filled goes to sfPairing', () => {
+    let state = makeBracketState();
+    state = pickBracketWinner(state, 'qf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
+    state = goToSfPairing(state);
+    state = updateSfPairingSlots(state, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    state = confirmSfPairings(state);
     const back = goBack(state)!;
     expect(back.phase).toBe('sfPairing');
   });
