@@ -29,11 +29,10 @@ export function allRound1Complete(matches: Match[]): boolean {
 }
 
 /**
- * Build the full bracket from R1 results + R2 pairings.
+ * Build a single waterfall bracket from R1 results + R2 pairings.
  *
- * R2 pairings are 4 matches: first 2 go to the left bracket, last 2 go to the right.
- * For each R2 pairing, we find the original R1 match for each wrestler and slot it
- * into the correct position so the bracket tree is coherent.
+ * R2 pairings are 4 quarterfinal matches. The bracket flows:
+ *   Round 1 (8 matches) → Quarterfinals (4) → Semifinals (2) → Final (1)
  */
 export function buildBracketFromPairings(
   round1Matches: Match[],
@@ -44,80 +43,62 @@ export function buildBracketFromPairings(
     if (m.winner) r1ByWinner.set(m.winner, m);
   }
 
-  const buildSide = (sidePairings: Round2Pairing[], sideLabel: string): Match[][] => {
-    const r1: Match[] = [];
-    const r2: Match[] = [];
+  // Round 1: re-slot R1 matches into bracket order based on pairings
+  const r1: Match[] = [];
+  const qf: Match[] = [];
 
-    sidePairings.forEach((pairing, pairingIdx) => {
-      const m1 = r1ByWinner.get(pairing.winner1)!;
-      const m2 = r1ByWinner.get(pairing.winner2)!;
+  pairings.forEach((pairing, i) => {
+    const m1 = r1ByWinner.get(pairing.winner1)!;
+    const m2 = r1ByWinner.get(pairing.winner2)!;
 
-      // Re-id the R1 matches to their bracket position
-      r1.push(
-        { ...m1, id: `${sideLabel}-r1-m${pairingIdx * 2}` },
-        { ...m2, id: `${sideLabel}-r1-m${pairingIdx * 2 + 1}` },
-      );
+    r1.push(
+      { ...m1, id: `r1-b${i * 2}` },
+      { ...m2, id: `r1-b${i * 2 + 1}` },
+    );
 
-      r2.push({
-        id: `${sideLabel}-r2-m${pairingIdx}`,
-        wrestler1: pairing.winner1,
-        wrestler2: pairing.winner2,
-        winner: null,
-      });
+    qf.push({
+      id: `qf-m${i}`,
+      wrestler1: pairing.winner1,
+      wrestler2: pairing.winner2,
+      winner: null,
     });
+  });
 
-    const semi: Match[] = [{
-      id: `${sideLabel}-r3-m0`,
-      wrestler1: null,
-      wrestler2: null,
-      winner: null,
-    }];
+  const semis: Match[] = [
+    { id: 'sf-m0', wrestler1: null, wrestler2: null, winner: null },
+    { id: 'sf-m1', wrestler1: null, wrestler2: null, winner: null },
+  ];
 
-    return [r1, r2, semi];
-  };
+  const final: Match[] = [
+    { id: 'final', wrestler1: null, wrestler2: null, winner: null },
+  ];
 
-  return {
-    left: buildSide(pairings.slice(0, 2), 'L'),
-    right: buildSide(pairings.slice(2, 4), 'R'),
-    final: {
-      id: 'final',
-      wrestler1: null,
-      wrestler2: null,
-      winner: null,
-    },
-  };
+  return { rounds: [r1, qf, semis, final] };
 }
 
 export function setWinner(bracket: Bracket, matchId: string, winner: string): Bracket {
   const newBracket = deepClone(bracket);
+  const { rounds } = newBracket;
 
-  for (const side of ['left', 'right'] as const) {
-    for (let roundIdx = 0; roundIdx < newBracket[side].length; roundIdx++) {
-      const round = newBracket[side][roundIdx];
-      for (let matchIdx = 0; matchIdx < round.length; matchIdx++) {
-        if (round[matchIdx].id === matchId) {
-          // R1 matches in the bracket view are already decided — skip propagation
-          // Only R2+ matches propagate
-          if (roundIdx === 0) return newBracket;
-          round[matchIdx].winner = winner;
-          propagateWinner(newBracket, side, roundIdx, matchIdx);
-          return newBracket;
-        }
+  for (let roundIdx = 0; roundIdx < rounds.length; roundIdx++) {
+    for (let matchIdx = 0; matchIdx < rounds[roundIdx].length; matchIdx++) {
+      if (rounds[roundIdx][matchIdx].id === matchId) {
+        // R1 matches are already decided — skip
+        if (roundIdx === 0) return newBracket;
+
+        rounds[roundIdx][matchIdx].winner = winner;
+        propagateWinner(newBracket, roundIdx, matchIdx);
+        return newBracket;
       }
     }
-  }
-
-  if (newBracket.final.id === matchId) {
-    newBracket.final.winner = winner;
   }
 
   return newBracket;
 }
 
-function propagateWinner(bracket: Bracket, side: 'left' | 'right', roundIdx: number, matchIdx: number) {
-  const rounds = bracket[side];
-  const match = rounds[roundIdx][matchIdx];
-  const winner = match.winner;
+function propagateWinner(bracket: Bracket, roundIdx: number, matchIdx: number) {
+  const { rounds } = bracket;
+  const winner = rounds[roundIdx][matchIdx].winner;
 
   if (roundIdx < rounds.length - 1) {
     const nextRound = rounds[roundIdx + 1];
@@ -129,21 +110,13 @@ function propagateWinner(bracket: Bracket, side: 'left' | 'right', roundIdx: num
     nextMatch[slot] = winner;
 
     if (oldValue !== winner) {
-      clearDownstream(bracket, side, roundIdx + 1, nextMatchIdx);
-    }
-  } else {
-    const slot = side === 'left' ? 'wrestler1' : 'wrestler2';
-    const oldValue = bracket.final[slot];
-    bracket.final[slot] = winner;
-
-    if (oldValue !== winner) {
-      bracket.final.winner = null;
+      clearDownstream(bracket, roundIdx + 1, nextMatchIdx);
     }
   }
 }
 
-function clearDownstream(bracket: Bracket, side: 'left' | 'right', roundIdx: number, matchIdx: number) {
-  const rounds = bracket[side];
+function clearDownstream(bracket: Bracket, roundIdx: number, matchIdx: number) {
+  const { rounds } = bracket;
   const match = rounds[roundIdx][matchIdx];
 
   if (match.winner !== null) {
@@ -153,11 +126,7 @@ function clearDownstream(bracket: Bracket, side: 'left' | 'right', roundIdx: num
       const nextMatchIdx = Math.floor(matchIdx / 2);
       const slot = matchIdx % 2 === 0 ? 'wrestler1' : 'wrestler2';
       rounds[roundIdx + 1][nextMatchIdx][slot] = null;
-      clearDownstream(bracket, side, roundIdx + 1, nextMatchIdx);
-    } else {
-      const slot = side === 'left' ? 'wrestler1' : 'wrestler2';
-      bracket.final[slot] = null;
-      bracket.final.winner = null;
+      clearDownstream(bracket, roundIdx + 1, nextMatchIdx);
     }
   }
 }
@@ -171,14 +140,11 @@ export function swapWrestler(bracket: Bracket, target: string, replacement: stri
     if (m.winner === target) m.winner = replacement;
   };
 
-  for (const side of ['left', 'right'] as const) {
-    for (const round of b[side]) {
-      for (const match of round) {
-        swapMatch(match);
-      }
+  for (const round of b.rounds) {
+    for (const match of round) {
+      swapMatch(match);
     }
   }
-  swapMatch(b.final);
 
   return b;
 }

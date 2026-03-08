@@ -1,29 +1,30 @@
-import type { Match } from '../types';
+import type { Match, Bracket } from '../types';
 import { t } from '../i18n';
 import { MatchCard } from './MatchCard';
+import { ChampionAlert } from './ChampionAlert';
 import './BracketView.css';
 
 type Props = {
-  label: string;
-  rounds: Match[][];
+  bracket: Bracket;
   onPickWinner: (matchId: string, winner: string) => void;
   swapMode?: boolean;
   onSwap?: (wrestler: string) => void;
 };
 
-export function BracketView({ label, rounds, onPickWinner, swapMode, onSwap }: Props) {
-  const roundLabels = [t('round1'), t('quarterfinals'), t('semifinal')];
-  const lastRoundIdx = rounds.length - 1;
+const ROUND_LABELS = ['round1', 'quarterfinals', 'semifinal', 'championshipFinal'] as const;
+
+export function BracketView({ bracket, onPickWinner, swapMode, onSwap }: Props) {
+  const { rounds } = bracket;
+  const finalMatch = rounds[rounds.length - 1]?.[0];
 
   return (
     <div className="bracket-side">
-      <h2 className="bracket-label">{label}</h2>
       <div className="rounds-container">
         {rounds.map((round, roundIdx) => (
           <div key={roundIdx} className={`round${roundIdx > 0 ? ' round--fed' : ''}`}>
-            <h3 className="round-label">{roundLabels[roundIdx]}</h3>
+            <h3 className="round-label">{t(ROUND_LABELS[roundIdx])}</h3>
             <div className="round-matches">
-              {roundIdx < lastRoundIdx
+              {roundIdx < rounds.length - 1
                 ? chunk(round, 2).map((pair, pairIdx) => (
                     <div key={pairIdx} className="match-pair">
                       {pair.map((match) => (
@@ -38,6 +39,7 @@ export function BracketView({ label, rounds, onPickWinner, swapMode, onSwap }: P
           </div>
         ))}
       </div>
+      {finalMatch && <ChampionAlert winner={finalMatch.winner} />}
     </div>
   );
 }

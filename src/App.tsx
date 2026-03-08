@@ -4,7 +4,6 @@ import { SetupView } from './components/SetupView';
 import { PairingView } from './components/PairingView';
 import { BracketView } from './components/BracketView';
 import { MatchCard } from './components/MatchCard';
-import { ChampionAlert } from './components/ChampionAlert';
 import { AppMenu } from './components/AppMenu';
 import './App.css';
 
@@ -30,10 +29,10 @@ function App() {
   const hasBackup = !!state?.backup;
 
   const emptySlots = [
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
+    { winner1: null, winner2: null, winner: null },
+    { winner1: null, winner2: null, winner: null },
+    { winner1: null, winner2: null, winner: null },
+    { winner1: null, winner2: null, winner: null },
   ];
 
   const header = (
@@ -110,20 +109,12 @@ function App() {
     );
   }
 
-  const bracket = state.bracket!;
   return (
     <div className="app">
       {header}
       {swapBar}
 
-      <div className="final-section">
-        <h2 className="final-label">{t('championshipFinal')}</h2>
-        <MatchCard match={bracket.final} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
-        <ChampionAlert winner={bracket.final.winner} />
-      </div>
-
-      <BracketView label={t('leftBracket')} rounds={bracket.left} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
-      <BracketView label={t('rightBracket')} rounds={bracket.right} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
+      <BracketView bracket={state.bracket!} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
     </div>
   );
 }

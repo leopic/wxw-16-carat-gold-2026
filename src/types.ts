@@ -8,9 +8,7 @@ export type Match = {
 };
 
 export type Bracket = {
-  left: Match[][];   // [round1(4), round2(2), semiFinal(1)]
-  right: Match[][];  // [round1(4), round2(2), semiFinal(1)]
-  final: Match;
+  rounds: Match[][]; // [round1(8), quarterfinals(4), semis(2), final(1)]
 };
 
 export type Matchup = {
@@ -26,6 +24,7 @@ export type Round2Pairing = {
 export type PairingSlot = {
   winner1: string | null;
   winner2: string | null;
+  winner: string | null;
 };
 
 export type TournamentState = {
