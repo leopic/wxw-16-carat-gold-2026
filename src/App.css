@@ -2,14 +2,14 @@
   max-width: 43.75rem;
   margin: 0 auto;
   padding: 1rem;
-  padding-top: calc(3.5rem + 3rem + 1rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 3.5rem + 3rem + 1rem);
   padding-bottom: 4.5rem;
   min-height: 100dvh;
 }
 
 .app-header {
   position: fixed;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   left: 0;
   right: 0;
   z-index: 20;
@@ -30,10 +30,10 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3.5rem;
+  height: calc(env(safe-area-inset-top, 0px) + 3.5rem);
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  z-index: -1; /* behind header content but part of its stacking context */
+  z-index: -1;
 }
 
 .app-title {
@@ -192,7 +192,7 @@
   .app {
     max-width: 56.25rem;
     padding: 1.5rem;
-    padding-top: calc(3.5rem + 3rem + 1.5rem);
+    padding-top: calc(env(safe-area-inset-top, 0px) + 3.5rem + 3rem + 1.5rem);
   }
 
   .app-header {
