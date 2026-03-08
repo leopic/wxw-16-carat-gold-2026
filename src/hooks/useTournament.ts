@@ -42,7 +42,11 @@ const NIGHT2_DEFAULT: TournamentState = {
 function loadState(): TournamentState | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    // Discard state saved with the old left/right bracket format
+    if (parsed.bracket && !Array.isArray(parsed.bracket.rounds)) return null;
+    return parsed;
   } catch {
     return null;
   }
