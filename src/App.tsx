@@ -5,6 +5,7 @@ import { PairingView } from './components/PairingView';
 import { BracketView } from './components/BracketView';
 import { MatchCard } from './components/MatchCard';
 import { AppMenu } from './components/AppMenu';
+import { ProgressBar } from './components/ProgressBar';
 import './App.css';
 
 function App() {
@@ -46,17 +47,34 @@ function App() {
     { winner1: null, winner2: null, winner: null },
   ];
 
+  const progressSteps = [
+    t('stepNight1'),
+    t('stepQFPairings'),
+    t('stepQuarterfinals'),
+    t('stepSFPairings'),
+    t('stepFinals'),
+  ];
+
+  let currentStep = 0;
+  if (state?.phase === 'pairing') currentStep = 1;
+  else if (state?.phase === 'bracket' && sfNotYetSet) currentStep = 2;
+  else if (state?.phase === 'sfPairing') currentStep = 3;
+  else if (state?.phase === 'bracket') currentStep = 4;
+
   const header = (
-    <header className="app-header">
-      <button className="back-btn" onClick={handleBack}>{t('back')}</button>
-      <h1 className="app-title">{t('appTitle')}</h1>
-      <AppMenu
-        hasBackup={hasBackup}
-        backupUsed={state?.backupUsed}
-        onInjurySub={() => setSwapMode(true)}
-        onReset={() => { if (confirm(t('resetConfirm'))) handleReset(); }}
-      />
-    </header>
+    <>
+      <header className="app-header">
+        <button className="back-btn" onClick={handleBack}>{t('back')}</button>
+        <h1 className="app-title">{t('appTitle')}</h1>
+        <AppMenu
+          hasBackup={hasBackup}
+          backupUsed={state?.backupUsed}
+          onInjurySub={() => setSwapMode(true)}
+          onReset={() => { if (confirm(t('resetConfirm'))) handleReset(); }}
+        />
+      </header>
+      <ProgressBar step={currentStep} steps={progressSteps} />
+    </>
   );
 
   const swapBar = state?.backup && swapMode ? (

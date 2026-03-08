@@ -39,6 +39,12 @@ const strings = {
     clearMatch: 'Clear',
     allPlaced: 'All winners placed',
     revealBrackets: 'Reveal Brackets',
+    // Progress
+    stepNight1: 'Night 1',
+    stepQFPairings: 'QF Draw',
+    stepQuarterfinals: 'Quarters',
+    stepSFPairings: 'SF Draw',
+    stepFinals: 'Final',
     // SF Pairing
     sfPairingTitle: 'Semifinal Pairings',
     sfPairingSubtitle: 'Tap a quarterfinal winner below, then tap a slot to place them.',
@@ -85,6 +91,12 @@ const strings = {
     clearMatch: 'Leeren',
     allPlaced: 'Alle Gewinner platziert',
     revealBrackets: 'Turnierbaum anzeigen',
+    // Progress
+    stepNight1: 'Abend 1',
+    stepQFPairings: 'VF-Los',
+    stepQuarterfinals: 'Viertel',
+    stepSFPairings: 'HF-Los',
+    stepFinals: 'Finale',
     // SF Pairing
     sfPairingTitle: 'Halbfinal-Paarungen',
     sfPairingSubtitle: 'Tippe auf einen Viertelfinal-Gewinner und dann auf einen Platz.',
@@ -131,6 +143,12 @@ const strings = {
     clearMatch: 'Borrar',
     allPlaced: 'Todos los ganadores colocados',
     revealBrackets: 'Revelar llaves',
+    // Progress
+    stepNight1: 'Noche 1',
+    stepQFPairings: 'Sorteo CF',
+    stepQuarterfinals: 'Cuartos',
+    stepSFPairings: 'Sorteo SF',
+    stepFinals: 'Final',
     // SF Pairing
     sfPairingTitle: 'Semifinales – Combates',
     sfPairingSubtitle: 'Toca un ganador de cuartos y luego un espacio para colocarlo.',
