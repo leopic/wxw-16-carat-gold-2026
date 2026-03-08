@@ -28,7 +28,9 @@ function App() {
     handleSfSlotsChange,
     handleSfPairingsConfirmed,
     handleBack,
-    handleReset,
+    handleResetNight1,
+    handleResetNight2,
+    handleResetNight3,
     handleBackupChange,
     handleSwap,
   } = useTournament();
@@ -70,7 +72,9 @@ function App() {
           hasBackup={hasBackup}
           backupUsed={state?.backupUsed}
           onInjurySub={() => setSwapMode(true)}
-          onReset={() => { if (confirm(t('resetConfirm'))) handleReset(); }}
+          onResetNight1={() => { if (confirm(t('resetConfirm'))) handleResetNight1(); }}
+          onResetNight2={() => { if (confirm(t('resetConfirm'))) handleResetNight2(); }}
+          onResetNight3={() => { if (confirm(t('resetConfirm'))) handleResetNight3(); }}
         />
       </header>
       <ProgressBar step={currentStep} steps={progressSteps} />

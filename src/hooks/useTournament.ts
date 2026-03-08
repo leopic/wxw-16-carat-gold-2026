@@ -14,30 +14,72 @@ import {
   setBackup,
   performSwap,
 } from '../tournament';
-import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners } from '../bracket';
+import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners, createRound1Matches, buildBracketFromPairings, setWinner } from '../bracket';
 
 const STORAGE_KEY = 'wxw-tournament';
 
+const NIGHT1_R1_MATCHES = [
+  { wrestler1: 'YAMATO', wrestler2: 'Axel Tischer' },
+  { wrestler1: 'Peter Tihanyi', wrestler2: 'Arez' },
+  { wrestler1: 'Chihiro Hashimoto', wrestler2: 'Thomas Shire' },
+  { wrestler1: 'Ahura', wrestler2: "Dennis 'Cash' Dullnig" },
+  { wrestler1: 'Dieter Schwartz', wrestler2: 'Tetsuya Naito' },
+  { wrestler1: 'Bobby Gunns', wrestler2: 'Erick Stevens' },
+  { wrestler1: 'Alan Angels', wrestler2: 'Titus Alexander' },
+  { wrestler1: 'Zoltan', wrestler2: 'Bushi' },
+];
+
+const NIGHT1_R1_WINNERS = [
+  'YAMATO', 'Peter Tihanyi', 'Thomas Shire', 'Ahura',
+  'Tetsuya Naito', 'Erick Stevens', 'Alan Angels', 'Zoltan',
+];
+
+const NIGHT2_R1_MATCHES = NIGHT1_R1_MATCHES.map((m, i) => ({
+  id: `r1-m${i}`,
+  ...m,
+  winner: NIGHT1_R1_WINNERS[i],
+}));
+
+const NIGHT2_QF_PAIRINGS: Round2Pairing[] = [
+  { winner1: 'YAMATO', winner2: 'Erick Stevens' },
+  { winner1: 'Thomas Shire', winner2: 'Zoltan' },
+  { winner1: 'Peter Tihanyi', winner2: 'Alan Angels' },
+  { winner1: 'Ahura', winner2: 'Tetsuya Naito' },
+];
+
+const NIGHT2_QF_WINNERS = ['YAMATO', 'Thomas Shire', 'Peter Tihanyi', 'Ahura'];
+
+const NIGHT1_DEFAULT: TournamentState = {
+  phase: 'round1',
+  round1Matches: createRound1Matches(NIGHT1_R1_MATCHES),
+};
+
 const NIGHT2_DEFAULT: TournamentState = {
   phase: 'pairing',
-  round1Matches: [
-    { id: 'r1-m0', wrestler1: 'YAMATO', wrestler2: 'Axel Tischer', winner: 'YAMATO' },
-    { id: 'r1-m1', wrestler1: 'Peter Tihanyi', wrestler2: 'Arez', winner: 'Peter Tihanyi' },
-    { id: 'r1-m2', wrestler1: 'Chihiro Hashimoto', wrestler2: 'Thomas Shire', winner: 'Thomas Shire' },
-    { id: 'r1-m3', wrestler1: 'Ahura', wrestler2: "Dennis 'Cash' Dullnig", winner: 'Ahura' },
-    { id: 'r1-m4', wrestler1: 'Dieter Schwartz', wrestler2: 'Tetsuya Naito', winner: 'Tetsuya Naito' },
-    { id: 'r1-m5', wrestler1: 'Bobby Gunns', wrestler2: 'Erick Stevens', winner: 'Erick Stevens' },
-    { id: 'r1-m6', wrestler1: 'Alan Angels', wrestler2: 'Titus Alexander', winner: 'Alan Angels' },
-    { id: 'r1-m7', wrestler1: 'Zoltan', wrestler2: 'Bushi', winner: 'Zoltan' },
-  ],
-  pairingSlots: [
-    { winner1: 'YAMATO', winner2: 'Erick Stevens', winner: 'YAMATO' },
-    { winner1: 'Thomas Shire', winner2: 'Zoltan', winner: 'Thomas Shire' },
-    { winner1: 'Peter Tihanyi', winner2: 'Alan Angels', winner: 'Peter Tihanyi' },
-    { winner1: 'Ahura', winner2: 'Tetsuya Naito', winner: 'Ahura' },
-  ],
+  round1Matches: NIGHT2_R1_MATCHES,
+  pairingSlots: NIGHT2_QF_PAIRINGS.map((p, i) => ({
+    winner1: p.winner1,
+    winner2: p.winner2,
+    winner: NIGHT2_QF_WINNERS[i],
+  })),
   backup: 'Jay Joshua',
 };
+
+function buildNight3Default(): TournamentState {
+  let bracket = buildBracketFromPairings(NIGHT2_R1_MATCHES, NIGHT2_QF_PAIRINGS);
+  NIGHT2_QF_WINNERS.forEach((w, i) => {
+    bracket = setWinner(bracket, `qf-m${i}`, w);
+  });
+  return {
+    phase: 'sfPairing',
+    round1Matches: NIGHT2_R1_MATCHES,
+    round2Pairings: NIGHT2_QF_PAIRINGS,
+    bracket,
+    backup: 'Jay Joshua',
+  };
+}
+
+const NIGHT3_DEFAULT = buildNight3Default();
 
 function loadState(): TournamentState | null {
   try {
@@ -104,9 +146,19 @@ export function useTournament() {
     setState((prev) => (prev ? goBack(prev) : prev));
   };
 
-  const handleReset = () => {
+  const handleResetNight1 = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setState(NIGHT1_DEFAULT);
+  };
+
+  const handleResetNight2 = () => {
     localStorage.removeItem(STORAGE_KEY);
     setState(NIGHT2_DEFAULT);
+  };
+
+  const handleResetNight3 = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setState(NIGHT3_DEFAULT);
   };
 
   const handleBackupChange = (name: string) => {
@@ -143,7 +195,9 @@ export function useTournament() {
     handleSfSlotsChange,
     handleSfPairingsConfirmed,
     handleBack,
-    handleReset,
+    handleResetNight1,
+    handleResetNight2,
+    handleResetNight3,
     handleBackupChange,
     handleSwap,
   };

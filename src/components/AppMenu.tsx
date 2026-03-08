@@ -6,10 +6,12 @@ type Props = {
   hasBackup?: boolean;
   backupUsed?: boolean;
   onInjurySub?: () => void;
-  onReset?: () => void;
+  onResetNight1?: () => void;
+  onResetNight2?: () => void;
+  onResetNight3?: () => void;
 };
 
-export function AppMenu({ hasBackup, backupUsed, onInjurySub, onReset }: Props) {
+export function AppMenu({ hasBackup, backupUsed, onInjurySub, onResetNight1, onResetNight2, onResetNight3 }: Props) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -46,12 +48,22 @@ export function AppMenu({ hasBackup, backupUsed, onInjurySub, onReset }: Props) 
               {t('injurySub')}{backupUsed ? ` (${t('used')})` : ''}
             </button>
           )}
-          {onReset && (
-            <button className="menu-item menu-item--danger" onClick={() => { setOpen(false); onReset(); }}>
-              {t('reset')}
+          {onResetNight1 && (
+            <button className="menu-item menu-item--danger" onClick={() => { setOpen(false); onResetNight1(); }}>
+              {t('resetNight1')}
             </button>
           )}
-          {(onReset || (hasBackup && onInjurySub)) && <hr className="menu-divider" />}
+          {onResetNight2 && (
+            <button className="menu-item menu-item--danger" onClick={() => { setOpen(false); onResetNight2(); }}>
+              {t('resetNight2')}
+            </button>
+          )}
+          {onResetNight3 && (
+            <button className="menu-item menu-item--danger" onClick={() => { setOpen(false); onResetNight3(); }}>
+              {t('resetNight3')}
+            </button>
+          )}
+          <hr className="menu-divider" />
           <a
             className="menu-item menu-item--link"
             href="https://github.com/leopic/wxw-16-carat-gold-2026"

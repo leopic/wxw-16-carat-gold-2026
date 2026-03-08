@@ -2,8 +2,10 @@ const strings = {
   en: {
     appTitle: 'wXw 16 Carat Gold 2026',
     back: 'Back',
-    reset: 'Reset',
-    resetConfirm: 'Reset the entire tournament? This cannot be undone.',
+    resetNight1: 'Reset to Night 1',
+    resetNight2: 'Reset to Night 2',
+    resetNight3: 'Reset to Night 3',
+    resetConfirm: 'This will reset your progress. Are you sure?',
     // Setup
     setupTitle: 'Night 1 Setup',
     setupSubtitle: 'Confirm the matchups or edit as needed',
@@ -54,8 +56,10 @@ const strings = {
   de: {
     appTitle: 'wXw 16 Carat Gold 2026',
     back: 'Zurück',
-    reset: 'Zurücksetzen',
-    resetConfirm: 'Ganzes Turnier zurücksetzen? Kann nicht rückgängig gemacht werden.',
+    resetNight1: 'Zurück zu Abend 1',
+    resetNight2: 'Zurück zu Abend 2',
+    resetNight3: 'Zurück zu Abend 3',
+    resetConfirm: 'Dein Fortschritt wird zurückgesetzt. Sicher?',
     // Setup
     setupTitle: 'Abend 1 – Aufstellung',
     setupSubtitle: 'Check die Paarungen und pass sie an',
@@ -106,8 +110,10 @@ const strings = {
   es: {
     appTitle: 'wXw 16 Carat Gold 2026',
     back: 'Atrás',
-    reset: 'Reiniciar',
-    resetConfirm: '¿Reiniciar todo el torneo? No se puede deshacer.',
+    resetNight1: 'Volver a Noche 1',
+    resetNight2: 'Volver a Noche 2',
+    resetNight3: 'Volver a Noche 3',
+    resetConfirm: 'Se va a reiniciar tu progreso. ¿Seguro?',
     // Setup
     setupTitle: 'Noche 1 – Armado',
     setupSubtitle: 'Revisá las peleas y ajustalas si hace falta',
