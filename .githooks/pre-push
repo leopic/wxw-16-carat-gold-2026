@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "Running pre-push checks..."
+npx tsc -b || exit 1
+npx vitest run || exit 1
+echo "All checks passed."
