@@ -1,4 +1,4 @@
-import type { Match, Bracket } from '../types';
+import type { Bracket } from '../types';
 import { t } from '../i18n';
 import { MatchCard } from './MatchCard';
 import { ChampionAlert } from './ChampionAlert';
