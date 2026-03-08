@@ -46,36 +46,40 @@ function buildNight3Default(): TournamentState {
   NIGHT2_QF_WINNERS.forEach((w, i) => {
     bracket = setWinner(bracket, `qf-m${i}`, w);
   });
-
-  // Fill SF pairings, SF winners, and final winner if available
-  if (NIGHT3_SF_PAIRINGS.length === 2) {
-    const sfSlots = NIGHT3_SF_PAIRINGS.map((p, i) => ({
-      winner1: p.winner1,
-      winner2: p.winner2,
-      winner: NIGHT3_SF_WINNERS[i] ?? null,
-    }));
-    bracket = fillSemifinals(bracket, sfSlots);
-
-    if (FINAL_WINNER) {
-      bracket = setWinner(bracket, 'final', FINAL_WINNER);
-    }
-  }
-
   return {
     phase: 'sfPairing',
     round1Matches: NIGHT2_R1_MATCHES,
     round2Pairings: NIGHT2_QF_PAIRINGS,
-    sfPairingSlots: NIGHT3_SF_PAIRINGS.map((p, i) => ({
-      winner1: p.winner1,
-      winner2: p.winner2,
-      winner: NIGHT3_SF_WINNERS[i] ?? null,
-    })),
+    bracket,
+    backup: BACKUP_WRESTLER,
+  };
+}
+
+function buildResultsDefault(): TournamentState {
+  let bracket = buildBracketFromPairings(NIGHT2_R1_MATCHES, NIGHT2_QF_PAIRINGS);
+  NIGHT2_QF_WINNERS.forEach((w, i) => {
+    bracket = setWinner(bracket, `qf-m${i}`, w);
+  });
+  const sfSlots = NIGHT3_SF_PAIRINGS.map((p, i) => ({
+    winner1: p.winner1,
+    winner2: p.winner2,
+    winner: NIGHT3_SF_WINNERS[i] ?? null,
+  }));
+  bracket = fillSemifinals(bracket, sfSlots);
+  if (FINAL_WINNER) {
+    bracket = setWinner(bracket, 'final', FINAL_WINNER);
+  }
+  return {
+    phase: 'bracket',
+    round1Matches: NIGHT2_R1_MATCHES,
+    round2Pairings: NIGHT2_QF_PAIRINGS,
     bracket,
     backup: BACKUP_WRESTLER,
   };
 }
 
 const NIGHT3_DEFAULT = buildNight3Default();
+const RESULTS_DEFAULT = buildResultsDefault();
 
 function loadState(): TournamentState | null {
   try {
@@ -95,7 +99,7 @@ function saveState(state: TournamentState) {
 }
 
 export function useTournament() {
-  const [state, setState] = useState<TournamentState | null>(() => loadState() ?? NIGHT2_DEFAULT);
+  const [state, setState] = useState<TournamentState | null>(() => loadState() ?? RESULTS_DEFAULT);
   const [swapMode, setSwapMode] = useState(false);
 
   useEffect(() => {
@@ -157,6 +161,11 @@ export function useTournament() {
     setState(NIGHT3_DEFAULT);
   };
 
+  const handleShowResults = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setState(RESULTS_DEFAULT);
+  };
+
   const handleBackupChange = (name: string) => {
     setState((prev) => (prev ? setBackup(prev, name) : prev));
   };
@@ -194,6 +203,7 @@ export function useTournament() {
     handleResetNight1,
     handleResetNight2,
     handleResetNight3,
+    handleShowResults,
     handleBackupChange,
     handleSwap,
   };

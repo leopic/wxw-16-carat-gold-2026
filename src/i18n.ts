@@ -7,6 +7,7 @@ const strings = {
     resetNight1: 'Reset to Night 1',
     resetNight2: 'Reset to Night 2',
     resetNight3: 'Reset to Night 3',
+    showResults: 'Show Final Results',
     resetConfirm: 'This will reset your progress. Are you sure?',
     // Setup
     setupTitle: 'Night 1 Setup',
@@ -61,6 +62,7 @@ const strings = {
     resetNight1: 'Zurück zu Abend 1',
     resetNight2: 'Zurück zu Abend 2',
     resetNight3: 'Zurück zu Abend 3',
+    showResults: 'Endergebnis anzeigen',
     resetConfirm: 'Dein Fortschritt wird zurückgesetzt. Sicher?',
     // Setup
     setupTitle: 'Abend 1 – Aufstellung',
@@ -115,6 +117,7 @@ const strings = {
     resetNight1: 'Volver a Noche 1',
     resetNight2: 'Volver a Noche 2',
     resetNight3: 'Volver a Noche 3',
+    showResults: 'Ver resultado final',
     resetConfirm: 'Se va a reiniciar tu progreso. ¿Seguro?',
     // Setup
     setupTitle: 'Noche 1 – Armado',
