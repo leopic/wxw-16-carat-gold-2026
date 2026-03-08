@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 1rem;
   padding-top: calc(3.5rem + 1rem);
+  padding-bottom: 4.5rem;
   min-height: 100dvh;
 }
 
@@ -164,7 +165,7 @@
 }
 
 .proceed-btn {
-  margin-top: 1.25rem;
+  /* inherits fixed positioning from .start-btn */
 }
 
 /* Landscape phone: 2-column grid for round 1 matches */

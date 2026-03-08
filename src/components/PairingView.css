@@ -2,6 +2,7 @@
   max-width: 31.25rem;
   margin: 0 auto;
   padding: 1.25rem 1rem;
+  padding-bottom: 4.5rem;
 }
 
 .pairing-title {
@@ -191,12 +192,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.625rem;
-  }
-
-  .start-btn {
-    max-width: 25rem;
-    margin-left: auto;
-    margin-right: auto;
   }
 }
 

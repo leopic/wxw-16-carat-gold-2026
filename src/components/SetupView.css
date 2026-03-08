@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 1.25rem 1rem;
   padding-top: calc(3.5rem + 1.25rem);
+  padding-bottom: 4.5rem;
 }
 
 .setup-title {
@@ -71,12 +72,16 @@
 }
 
 .start-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: block;
   width: 100%;
   padding: 0.875rem;
-  margin-top: 1.25rem;
+  padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0;
   background: var(--gold);
   color: var(--gold-contrast);
   font-size: 1rem;
@@ -87,6 +92,7 @@
   -webkit-user-select: none;
   user-select: none;
   min-height: 3rem;
+  z-index: 10;
 }
 
 .start-btn:hover:not(:disabled) {
@@ -114,9 +120,9 @@
   }
 
   .start-btn {
-    max-width: 25rem;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 43.75rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
@@ -134,8 +140,8 @@
   }
 
   .start-btn {
-    max-width: 25rem;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 43.75rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
