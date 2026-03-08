@@ -1,16 +1,6 @@
 import { useState } from 'react';
 import type { Matchup } from '../types';
-
-const SEED_MATCHUPS: Matchup[] = [
-  { wrestler1: 'YAMATO', wrestler2: 'Axel Tischer' },
-  { wrestler1: 'Peter Tihanyi', wrestler2: 'Arez' },
-  { wrestler1: 'Chihiro Hashimoto', wrestler2: 'Thomas Shire' },
-  { wrestler1: 'Ahura', wrestler2: "Dennis 'Cash' Dullnig" },
-  { wrestler1: 'Dieter Schwartz', wrestler2: 'Tetsuya Naito' },
-  { wrestler1: 'Bobby Gunns', wrestler2: 'Erick Stevens' },
-  { wrestler1: 'Alan Angels', wrestler2: 'Titus Alexander' },
-  { wrestler1: 'Zoltan', wrestler2: 'Bushi' },
-];
+import { SEED_MATCHUPS } from '../edition';
 
 export function useSetupView(onStart: (matchups: Matchup[]) => void) {
   const [matchups, setMatchups] = useState<Matchup[]>(SEED_MATCHUPS);

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { EDITION_TITLE, EDITION_DESCRIPTION } from './src/edition'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,9 +15,9 @@ export default defineConfig({
       manifest: {
         id: '/',
         start_url: '/',
-        name: 'wXw 16 Carat Gold 2026',
+        name: EDITION_TITLE,
         short_name: 'wXw 16CT',
-        description: 'Tournament bracket tracker for wXw 16 Carat Gold 2026',
+        description: EDITION_DESCRIPTION,
         theme_color: '#d4a44a',
         background_color: '#1c1c1c',
         display: 'standalone',

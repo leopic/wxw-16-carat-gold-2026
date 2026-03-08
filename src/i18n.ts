@@ -1,6 +1,8 @@
+import { EDITION_TITLE } from './edition';
+
 const strings = {
   en: {
-    appTitle: 'wXw 16 Carat Gold 2026',
+    appTitle: EDITION_TITLE,
     back: 'Back',
     resetNight1: 'Reset to Night 1',
     resetNight2: 'Reset to Night 2',
@@ -54,7 +56,7 @@ const strings = {
     setSfPairings: 'Set Semifinal Pairings',
   },
   de: {
-    appTitle: 'wXw 16 Carat Gold 2026',
+    appTitle: EDITION_TITLE,
     back: 'Zurück',
     resetNight1: 'Zurück zu Abend 1',
     resetNight2: 'Zurück zu Abend 2',
@@ -108,7 +110,7 @@ const strings = {
     setSfPairings: 'Halbfinal-Paarungen festlegen',
   },
   es: {
-    appTitle: 'wXw 16 Carat Gold 2026',
+    appTitle: EDITION_TITLE,
     back: 'Atrás',
     resetNight1: 'Volver a Noche 1',
     resetNight2: 'Volver a Noche 2',

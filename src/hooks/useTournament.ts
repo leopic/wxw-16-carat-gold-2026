@@ -15,43 +15,19 @@ import {
   performSwap,
 } from '../tournament';
 import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners, createRound1Matches, buildBracketFromPairings, setWinner } from '../bracket';
+import { SEED_MATCHUPS, NIGHT1_WINNERS, NIGHT2_QF_PAIRINGS, NIGHT2_QF_WINNERS, BACKUP_WRESTLER } from '../edition';
 
 const STORAGE_KEY = 'wxw-tournament';
 
-const NIGHT1_R1_MATCHES = [
-  { wrestler1: 'YAMATO', wrestler2: 'Axel Tischer' },
-  { wrestler1: 'Peter Tihanyi', wrestler2: 'Arez' },
-  { wrestler1: 'Chihiro Hashimoto', wrestler2: 'Thomas Shire' },
-  { wrestler1: 'Ahura', wrestler2: "Dennis 'Cash' Dullnig" },
-  { wrestler1: 'Dieter Schwartz', wrestler2: 'Tetsuya Naito' },
-  { wrestler1: 'Bobby Gunns', wrestler2: 'Erick Stevens' },
-  { wrestler1: 'Alan Angels', wrestler2: 'Titus Alexander' },
-  { wrestler1: 'Zoltan', wrestler2: 'Bushi' },
-];
-
-const NIGHT1_R1_WINNERS = [
-  'YAMATO', 'Peter Tihanyi', 'Thomas Shire', 'Ahura',
-  'Tetsuya Naito', 'Erick Stevens', 'Alan Angels', 'Zoltan',
-];
-
-const NIGHT2_R1_MATCHES = NIGHT1_R1_MATCHES.map((m, i) => ({
+const NIGHT2_R1_MATCHES = SEED_MATCHUPS.map((m, i) => ({
   id: `r1-m${i}`,
   ...m,
-  winner: NIGHT1_R1_WINNERS[i],
+  winner: NIGHT1_WINNERS[i],
 }));
-
-const NIGHT2_QF_PAIRINGS: Round2Pairing[] = [
-  { winner1: 'YAMATO', winner2: 'Erick Stevens' },
-  { winner1: 'Thomas Shire', winner2: 'Zoltan' },
-  { winner1: 'Peter Tihanyi', winner2: 'Alan Angels' },
-  { winner1: 'Ahura', winner2: 'Tetsuya Naito' },
-];
-
-const NIGHT2_QF_WINNERS = ['YAMATO', 'Thomas Shire', 'Peter Tihanyi', 'Ahura'];
 
 const NIGHT1_DEFAULT: TournamentState = {
   phase: 'round1',
-  round1Matches: createRound1Matches(NIGHT1_R1_MATCHES),
+  round1Matches: createRound1Matches(SEED_MATCHUPS),
 };
 
 const NIGHT2_DEFAULT: TournamentState = {
@@ -62,7 +38,7 @@ const NIGHT2_DEFAULT: TournamentState = {
     winner2: p.winner2,
     winner: NIGHT2_QF_WINNERS[i],
   })),
-  backup: 'Jay Joshua',
+  backup: BACKUP_WRESTLER,
 };
 
 function buildNight3Default(): TournamentState {
@@ -75,7 +51,7 @@ function buildNight3Default(): TournamentState {
     round1Matches: NIGHT2_R1_MATCHES,
     round2Pairings: NIGHT2_QF_PAIRINGS,
     bracket,
-    backup: 'Jay Joshua',
+    backup: BACKUP_WRESTLER,
   };
 }
 
