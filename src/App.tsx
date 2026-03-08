@@ -31,6 +31,7 @@ function App() {
     handleResetNight1,
     handleResetNight2,
     handleResetNight3,
+    handleShowResults,
     handleBackupChange,
     handleSwap,
   } = useTournament();
@@ -75,6 +76,7 @@ function App() {
           onResetNight1={() => { if (confirm(t('resetConfirm'))) handleResetNight1(); }}
           onResetNight2={() => { if (confirm(t('resetConfirm'))) handleResetNight2(); }}
           onResetNight3={() => { if (confirm(t('resetConfirm'))) handleResetNight3(); }}
+          onShowResults={handleShowResults}
         />
       </header>
       <ProgressBar step={currentStep} steps={progressSteps} />

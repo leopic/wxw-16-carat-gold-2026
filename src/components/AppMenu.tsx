@@ -9,9 +9,10 @@ type Props = {
   onResetNight1?: () => void;
   onResetNight2?: () => void;
   onResetNight3?: () => void;
+  onShowResults?: () => void;
 };
 
-export function AppMenu({ hasBackup, backupUsed, onInjurySub, onResetNight1, onResetNight2, onResetNight3 }: Props) {
+export function AppMenu({ hasBackup, backupUsed, onInjurySub, onResetNight1, onResetNight2, onResetNight3, onShowResults }: Props) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -61,6 +62,11 @@ export function AppMenu({ hasBackup, backupUsed, onInjurySub, onResetNight1, onR
           {onResetNight3 && (
             <button className="menu-item menu-item--danger" onClick={() => { setOpen(false); onResetNight3(); }}>
               {t('resetNight3')}
+            </button>
+          )}
+          {onShowResults && (
+            <button className="menu-item" onClick={() => { setOpen(false); onShowResults(); }}>
+              {t('showResults')}
             </button>
           )}
           <hr className="menu-divider" />
