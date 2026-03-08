@@ -8,10 +8,10 @@ import {
 } from './bracket';
 
 const EMPTY_SLOTS: PairingSlot[] = [
-  { winner1: null, winner2: null },
-  { winner1: null, winner2: null },
-  { winner1: null, winner2: null },
-  { winner1: null, winner2: null },
+  { winner1: null, winner2: null, winner: null },
+  { winner1: null, winner2: null, winner: null },
+  { winner1: null, winner2: null, winner: null },
+  { winner1: null, winner2: null, winner: null },
 ];
 
 export function setupTournament(matchups: Matchup[]): TournamentState {
@@ -34,7 +34,17 @@ export function updatePairingSlots(state: TournamentState, slots: PairingSlot[])
 }
 
 export function confirmPairings(state: TournamentState, pairings: Round2Pairing[]): TournamentState {
-  const bracket = buildBracketFromPairings(state.round1Matches, pairings);
+  let bracket = buildBracketFromPairings(state.round1Matches, pairings);
+
+  // Apply any QF winners already picked during pairing
+  const slots = state.pairingSlots ?? [];
+  for (let i = 0; i < slots.length; i++) {
+    const w = slots[i].winner;
+    if (w) {
+      bracket = bracketSetWinner(bracket, `qf-m${i}`, w);
+    }
+  }
+
   return {
     ...state,
     phase: 'bracket',
@@ -73,6 +83,7 @@ export function performSwap(state: TournamentState, target: string): TournamentS
   const pairingSlots = state.pairingSlots?.map((s) => ({
     winner1: s.winner1 === target ? replacement : s.winner1,
     winner2: s.winner2 === target ? replacement : s.winner2,
+    winner: s.winner === target ? replacement : s.winner,
   }));
 
   const bracket = state.bracket

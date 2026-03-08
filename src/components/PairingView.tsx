@@ -1,5 +1,6 @@
 import type { Round2Pairing, PairingSlot } from '../types';
 import { t } from '../i18n';
+import { MatchCard } from './MatchCard';
 import { usePairingView } from '../hooks/usePairingView';
 import './PairingView.css';
 
@@ -16,9 +17,10 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
   const {
     selected,
     available,
-    allFilled,
+    allDecided,
     handleWinnerTap,
     handleSlotTap,
+    handleMatchWinner,
     handleConfirm,
   } = usePairingView(slots, winners, onSlotsChange, onConfirm, swapMode, onSwap);
 
@@ -43,43 +45,70 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
       </div>
 
       <div className="pairing-slots">
-        {slots.map((slot, i) => (
-          <div key={i} className="pairing-slot">
-            <div className="slot-header">
-              <span className="slot-label">{t('match')} {i + 1}</span>
-              {i < 2 && <span className="slot-side left-tag">{t('left')}</span>}
-              {i >= 2 && <span className="slot-side right-tag">{t('right')}</span>}
+        {slots.map((slot, i) => {
+          const matchReady = slot.winner1 !== null && slot.winner2 !== null;
+          return (
+            <div key={i} className="pairing-slot">
+              <div className="slot-header">
+                <span className="slot-label">{t('match')} {i + 1}</span>
+              </div>
+              {matchReady ? (
+                <>
+                  <MatchCard
+                    match={{
+                      id: `pairing-${i}`,
+                      wrestler1: slot.winner1,
+                      wrestler2: slot.winner2,
+                      winner: slot.winner,
+                    }}
+                    onPickWinner={(_id, winner) => handleMatchWinner(i, winner)}
+                    swapMode={swapMode}
+                    onSwap={onSwap}
+                  />
+                  {!swapMode && (
+                    <button
+                      className="slot-clear-btn"
+                      onClick={() => {
+                        handleSlotTap(i, 'winner2');
+                      }}
+                    >
+                      {t('clearMatch')}
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="slot-row">
+                  <button
+                    className={[
+                      'slot-btn',
+                      slot.winner1 ? 'filled' : '',
+                      !slot.winner1 && selected ? 'ready' : '',
+                      swapMode && slot.winner1 ? 'swap-target' : '',
+                    ].filter(Boolean).join(' ')}
+                    onClick={() => handleSlotTap(i, 'winner1')}
+                  >
+                    {slot.winner1 ?? t('tapToPlace')}
+                  </button>
+                  <span className="slot-vs">{t('vs')}</span>
+                  <button
+                    className={[
+                      'slot-btn',
+                      slot.winner2 ? 'filled' : '',
+                      !slot.winner2 && selected ? 'ready' : '',
+                      swapMode && slot.winner2 ? 'swap-target' : '',
+                    ].filter(Boolean).join(' ')}
+                    onClick={() => handleSlotTap(i, 'winner2')}
+                  >
+                    {slot.winner2 ?? t('tapToPlace')}
+                  </button>
+                </div>
+              )}
             </div>
-            <div className="slot-row">
-              <button
-                className={[
-                  'slot-btn',
-                  slot.winner1 ? 'filled' : '',
-                  !slot.winner1 && selected ? 'ready' : '',
-                  swapMode && slot.winner1 ? 'swap-target' : '',
-                ].filter(Boolean).join(' ')}
-                onClick={() => handleSlotTap(i, 'winner1')}
-              >
-                {slot.winner1 ?? t('tapToPlace')}
-              </button>
-              <span className="slot-vs">{t('vs')}</span>
-              <button
-                className={[
-                  'slot-btn',
-                  slot.winner2 ? 'filled' : '',
-                  !slot.winner2 && selected ? 'ready' : '',
-                  swapMode && slot.winner2 ? 'swap-target' : '',
-                ].filter(Boolean).join(' ')}
-                onClick={() => handleSlotTap(i, 'winner2')}
-              >
-                {slot.winner2 ?? t('tapToPlace')}
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <button className="start-btn" onClick={handleConfirm} disabled={!allFilled}>
+      <button className="start-btn" onClick={handleConfirm} disabled={!allDecided}>
         {t('revealBrackets')}
       </button>
     </div>

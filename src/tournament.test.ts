@@ -101,10 +101,10 @@ describe('goToPairing', () => {
     const withSlots: TournamentState = {
       ...state,
       pairingSlots: [
-        { winner1: 'A', winner2: 'C' },
-        { winner1: null, winner2: null },
-        { winner1: null, winner2: null },
-        { winner1: null, winner2: null },
+        { winner1: 'A', winner2: 'C', winner: null },
+        { winner1: null, winner2: null, winner: null },
+        { winner1: null, winner2: null, winner: null },
+        { winner1: null, winner2: null, winner: null },
       ],
     };
     const pairing = goToPairing(withSlots);
@@ -116,10 +116,10 @@ describe('updatePairingSlots', () => {
   it('replaces the pairing slots', () => {
     const state = makePairingState();
     const newSlots: PairingSlot[] = [
-      { winner1: 'A', winner2: 'C' },
-      { winner1: 'E', winner2: 'G' },
-      { winner1: 'I', winner2: 'K' },
-      { winner1: 'M', winner2: 'O' },
+      { winner1: 'A', winner2: 'C', winner: null },
+      { winner1: 'E', winner2: 'G', winner: null },
+      { winner1: 'I', winner2: 'K', winner: null },
+      { winner1: 'M', winner2: 'O', winner: null },
     ];
     const next = updatePairingSlots(state, newSlots);
     expect(next.pairingSlots).toEqual(newSlots);
@@ -129,10 +129,10 @@ describe('updatePairingSlots', () => {
     const state = makePairingState();
     const original = state.pairingSlots;
     updatePairingSlots(state, [
-      { winner1: 'A', winner2: 'C' },
-      { winner1: null, winner2: null },
-      { winner1: null, winner2: null },
-      { winner1: null, winner2: null },
+      { winner1: 'A', winner2: 'C', winner: null },
+      { winner1: null, winner2: null, winner: null },
+      { winner1: null, winner2: null, winner: null },
+      { winner1: null, winner2: null, winner: null },
     ]);
     expect(state.pairingSlots).toBe(original);
   });
@@ -149,41 +149,62 @@ describe('confirmPairings', () => {
   it('builds correct bracket structure', () => {
     const state = confirmPairings(makePairingState(), pairings);
     const b = state.bracket!;
-    expect(b.left).toHaveLength(3);
-    expect(b.right).toHaveLength(3);
-    expect(b.left[1][0].wrestler1).toBe('A');
-    expect(b.left[1][0].wrestler2).toBe('C');
-    expect(b.right[1][0].wrestler1).toBe('I');
-    expect(b.right[1][0].wrestler2).toBe('K');
+    expect(b.rounds).toHaveLength(4);
+    expect(b.rounds[0]).toHaveLength(8);  // R1
+    expect(b.rounds[1]).toHaveLength(4);  // QF
+    expect(b.rounds[2]).toHaveLength(2);  // SF
+    expect(b.rounds[3]).toHaveLength(1);  // Final
+    expect(b.rounds[1][0].wrestler1).toBe('A');
+    expect(b.rounds[1][0].wrestler2).toBe('C');
+    expect(b.rounds[1][2].wrestler1).toBe('I');
+    expect(b.rounds[1][2].wrestler2).toBe('K');
+  });
+
+  it('carries pre-picked QF winners into the bracket', () => {
+    let state = makePairingState();
+    state = updatePairingSlots(state, [
+      { winner1: 'A', winner2: 'C', winner: 'A' },
+      { winner1: 'E', winner2: 'G', winner: 'G' },
+      { winner1: 'I', winner2: 'K', winner: null },
+      { winner1: 'M', winner2: 'O', winner: null },
+    ]);
+    const confirmed = confirmPairings(state, pairings);
+    const b = confirmed.bracket!;
+    expect(b.rounds[1][0].winner).toBe('A');
+    expect(b.rounds[1][1].winner).toBe('G');
+    expect(b.rounds[2][0].wrestler1).toBe('A');
+    expect(b.rounds[2][0].wrestler2).toBe('G');
+    expect(b.rounds[1][2].winner).toBeNull();
+    expect(b.rounds[1][3].winner).toBeNull();
   });
 });
 
 describe('pickBracketWinner', () => {
-  it('sets the winner in R2', () => {
+  it('sets the winner in QF', () => {
     const state = makeBracketState();
-    const next = pickBracketWinner(state, 'L-r2-m0', 'A');
-    expect(next.bracket!.left[1][0].winner).toBe('A');
+    const next = pickBracketWinner(state, 'qf-m0', 'A');
+    expect(next.bracket!.rounds[1][0].winner).toBe('A');
   });
 
   it('propagates through semifinal to final', () => {
     let state = makeBracketState();
-    state = pickBracketWinner(state, 'L-r2-m0', 'A');
-    state = pickBracketWinner(state, 'L-r2-m1', 'E');
-    state = pickBracketWinner(state, 'L-r3-m0', 'A');
-    expect(state.bracket!.final.wrestler1).toBe('A');
+    state = pickBracketWinner(state, 'qf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'sf-m0', 'A');
+    expect(state.bracket!.rounds[3][0].wrestler1).toBe('A');
 
-    state = pickBracketWinner(state, 'R-r2-m0', 'I');
-    state = pickBracketWinner(state, 'R-r2-m1', 'M');
-    state = pickBracketWinner(state, 'R-r3-m0', 'I');
-    expect(state.bracket!.final.wrestler2).toBe('I');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
+    state = pickBracketWinner(state, 'sf-m1', 'I');
+    expect(state.bracket!.rounds[3][0].wrestler2).toBe('I');
 
     state = pickBracketWinner(state, 'final', 'A');
-    expect(state.bracket!.final.winner).toBe('A');
+    expect(state.bracket!.rounds[3][0].winner).toBe('A');
   });
 
   it('returns state unchanged if no bracket', () => {
     const state = makePairingState();
-    const next = pickBracketWinner(state, 'L-r2-m0', 'A');
+    const next = pickBracketWinner(state, 'qf-m0', 'A');
     expect(next).toBe(state);
   });
 });
@@ -241,23 +262,24 @@ describe('performSwap', () => {
   it('replaces wrestler in pairing slots', () => {
     let state = makePairingState();
     state = updatePairingSlots(state, [
-      { winner1: 'A', winner2: 'C' },
-      { winner1: null, winner2: null },
-      { winner1: null, winner2: null },
-      { winner1: null, winner2: null },
+      { winner1: 'A', winner2: 'C', winner: 'A' },
+      { winner1: null, winner2: null, winner: null },
+      { winner1: null, winner2: null, winner: null },
+      { winner1: null, winner2: null, winner: null },
     ]);
     state = setBackup(state, 'Z');
     const swapped = performSwap(state, 'A');
     expect(swapped.pairingSlots![0].winner1).toBe('Z');
+    expect(swapped.pairingSlots![0].winner).toBe('Z');
   });
 
   it('replaces wrestler in bracket', () => {
     let state = makeBracketState();
     state = setBackup(state, 'Z');
     const swapped = performSwap(state, 'A');
-    expect(swapped.bracket!.left[1][0].wrestler1).toBe('Z');
-    expect(swapped.bracket!.left[0][0].wrestler1).toBe('Z');
-    expect(swapped.bracket!.left[0][0].winner).toBe('Z');
+    expect(swapped.bracket!.rounds[1][0].wrestler1).toBe('Z');
+    expect(swapped.bracket!.rounds[0][0].wrestler1).toBe('Z');
+    expect(swapped.bracket!.rounds[0][0].winner).toBe('Z');
   });
 
   it('sets backupUsed flag', () => {
@@ -284,17 +306,17 @@ describe('performSwap', () => {
   it('swaps across all bracket positions including final', () => {
     let state = makeBracketState();
     state = setBackup(state, 'Z');
-    state = pickBracketWinner(state, 'L-r2-m0', 'A');
-    state = pickBracketWinner(state, 'L-r2-m1', 'E');
-    state = pickBracketWinner(state, 'L-r3-m0', 'A');
-    state = pickBracketWinner(state, 'R-r2-m0', 'I');
-    state = pickBracketWinner(state, 'R-r2-m1', 'M');
-    state = pickBracketWinner(state, 'R-r3-m0', 'I');
+    state = pickBracketWinner(state, 'qf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'sf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
+    state = pickBracketWinner(state, 'sf-m1', 'I');
     state = pickBracketWinner(state, 'final', 'A');
 
     const swapped = performSwap(state, 'A');
-    expect(swapped.bracket!.final.wrestler1).toBe('Z');
-    expect(swapped.bracket!.final.winner).toBe('Z');
-    expect(swapped.bracket!.left[2][0].winner).toBe('Z');
+    expect(swapped.bracket!.rounds[3][0].wrestler1).toBe('Z');
+    expect(swapped.bracket!.rounds[3][0].winner).toBe('Z');
+    expect(swapped.bracket!.rounds[2][0].winner).toBe('Z');
   });
 });

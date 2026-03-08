@@ -171,6 +171,16 @@
   flex-shrink: 0;
 }
 
+.slot-clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  text-align: center;
+}
+
 /* Landscape phone: 2x2 grid for pairing slots */
 @media (orientation: landscape) and (max-height: 31.25rem) {
   .pairing-view {

@@ -28,10 +28,10 @@ const NIGHT2_DEFAULT: TournamentState = {
     { id: 'r1-m7', wrestler1: 'Zoltan', wrestler2: 'Bushi', winner: 'Zoltan' },
   ],
   pairingSlots: [
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
-    { winner1: null, winner2: null },
+    { winner1: 'YAMATO', winner2: 'Erick Stevens', winner: 'YAMATO' },
+    { winner1: 'Thomas Shire', winner2: 'Zoltan', winner: 'Thomas Shire' },
+    { winner1: 'Peter Tihanyi', winner2: 'Alan Angels', winner: 'Peter Tihanyi' },
+    { winner1: 'Ahura', winner2: 'Tetsuya Naito', winner: 'Ahura' },
   ],
   backup: 'Jay Joshua',
 };
@@ -87,7 +87,7 @@ export function useTournament() {
 
   const handleReset = () => {
     localStorage.removeItem(STORAGE_KEY);
-    setState(null);
+    setState(NIGHT2_DEFAULT);
   };
 
   const handleBackupChange = (name: string) => {

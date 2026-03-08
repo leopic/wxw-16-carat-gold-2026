@@ -33,8 +33,9 @@ export function usePairingView(
     }
 
     if (current) {
+      // Removing a wrestler also clears the match winner
       onSlotsChange(
-        slots.map((s, i) => (i === slotIdx ? { ...s, [position]: null } : s))
+        slots.map((s, i) => (i === slotIdx ? { ...s, [position]: null, winner: null } : s))
       );
       return;
     }
@@ -47,7 +48,14 @@ export function usePairingView(
     }
   };
 
+  const handleMatchWinner = (slotIdx: number, winner: string) => {
+    onSlotsChange(
+      slots.map((s, i) => (i === slotIdx ? { ...s, winner } : s))
+    );
+  };
+
   const allFilled = slots.every((s) => s.winner1 && s.winner2);
+  const allDecided = slots.every((s) => s.winner1 && s.winner2 && s.winner);
 
   const handleConfirm = () => {
     if (!allFilled) return;
@@ -64,8 +72,10 @@ export function usePairingView(
     available,
     assigned,
     allFilled,
+    allDecided,
     handleWinnerTap,
     handleSlotTap,
+    handleMatchWinner,
     handleConfirm,
   };
 }
