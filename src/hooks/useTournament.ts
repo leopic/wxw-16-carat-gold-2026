@@ -14,8 +14,8 @@ import {
   setBackup,
   performSwap,
 } from '../tournament';
-import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners, createRound1Matches, buildBracketFromPairings, setWinner } from '../bracket';
-import { SEED_MATCHUPS, NIGHT1_WINNERS, NIGHT2_QF_PAIRINGS, NIGHT2_QF_WINNERS, BACKUP_WRESTLER } from '../edition-2026';
+import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners, createRound1Matches, buildBracketFromPairings, setWinner, fillSemifinals } from '../bracket';
+import { SEED_MATCHUPS, NIGHT1_WINNERS, NIGHT2_QF_PAIRINGS, NIGHT2_QF_WINNERS, NIGHT3_SF_PAIRINGS, NIGHT3_SF_WINNERS, FINAL_WINNER, BACKUP_WRESTLER } from '../edition-2026';
 
 const STORAGE_KEY = 'wxw-tournament';
 
@@ -46,10 +46,30 @@ function buildNight3Default(): TournamentState {
   NIGHT2_QF_WINNERS.forEach((w, i) => {
     bracket = setWinner(bracket, `qf-m${i}`, w);
   });
+
+  // Fill SF pairings, SF winners, and final winner if available
+  if (NIGHT3_SF_PAIRINGS.length === 2) {
+    const sfSlots = NIGHT3_SF_PAIRINGS.map((p, i) => ({
+      winner1: p.winner1,
+      winner2: p.winner2,
+      winner: NIGHT3_SF_WINNERS[i] ?? null,
+    }));
+    bracket = fillSemifinals(bracket, sfSlots);
+
+    if (FINAL_WINNER) {
+      bracket = setWinner(bracket, 'final', FINAL_WINNER);
+    }
+  }
+
   return {
     phase: 'sfPairing',
     round1Matches: NIGHT2_R1_MATCHES,
     round2Pairings: NIGHT2_QF_PAIRINGS,
+    sfPairingSlots: NIGHT3_SF_PAIRINGS.map((p, i) => ({
+      winner1: p.winner1,
+      winner2: p.winner2,
+      winner: NIGHT3_SF_WINNERS[i] ?? null,
+    })),
     bracket,
     backup: BACKUP_WRESTLER,
   };

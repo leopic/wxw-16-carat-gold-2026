@@ -29,6 +29,15 @@ export const NIGHT2_QF_PAIRINGS: Round2Pairing[] = [
 
 export const NIGHT2_QF_WINNERS = ['YAMATO', 'Thomas Shire', 'Peter Tihanyi', 'Ahura'];
 
+export const NIGHT3_SF_PAIRINGS: Round2Pairing[] = [
+  { winner1: 'Peter Tihanyi', winner2: 'Thomas Shire' },
+  { winner1: 'Ahura', winner2: 'YAMATO' },
+];
+
+export const NIGHT3_SF_WINNERS = ['Peter Tihanyi', 'Ahura'];
+
+export const FINAL_WINNER = 'Ahura';
+
 export const BACKUP_WRESTLER = 'Jay Joshua';
 
 /** Friday of the tournament weekend (Sat = Night 2, Sun = Night 3). */
