@@ -12,6 +12,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
       },
       manifest: {
+        id: '/',
+        start_url: '/',
         name: 'wXw 16 Carat Gold 2026',
         short_name: 'wXw 16CT',
         description: 'Tournament bracket tracker for wXw 16 Carat Gold 2026',
@@ -20,7 +22,8 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
     }),
