@@ -6,6 +6,7 @@ import {
   allRound1Complete,
   buildBracketFromPairings,
   setWinner,
+  fillSemifinals,
   swapWrestler,
 } from './bracket';
 import type { Matchup, TournamentState, Round2Pairing } from './types';
@@ -128,19 +129,22 @@ describe('setWinner', () => {
     expect(result.rounds[1][0].winner).toBeNull();
   });
 
-  it('QF winner propagates to semifinal slot', () => {
+  it('QF winner does NOT auto-propagate to semifinal', () => {
     const { bracket } = makeBracket();
     const b1 = setWinner(bracket, 'qf-m0', 'A');
-    expect(b1.rounds[2][0].wrestler1).toBe('A');
-
-    const b2 = setWinner(b1, 'qf-m1', 'E');
-    expect(b2.rounds[2][0].wrestler2).toBe('E');
+    // SF slots stay empty — they're set via sfPairing phase
+    expect(b1.rounds[2][0].wrestler1).toBeNull();
   });
 
   it('semifinal winner propagates to final', () => {
     const { bracket } = makeBracket();
     let b = setWinner(bracket, 'qf-m0', 'A');
     b = setWinner(b, 'qf-m1', 'E');
+    // Manually fill SF (as sfPairing phase would)
+    b = fillSemifinals(b, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
     b = setWinner(b, 'sf-m0', 'A');
     expect(b.rounds[3][0].wrestler1).toBe('A');
 
@@ -154,26 +158,27 @@ describe('setWinner', () => {
     const { bracket } = makeBracket();
     let b = setWinner(bracket, 'qf-m0', 'A');
     b = setWinner(b, 'qf-m1', 'E');
-    b = setWinner(b, 'sf-m0', 'A');
     b = setWinner(b, 'qf-m2', 'I');
     b = setWinner(b, 'qf-m3', 'M');
+    b = fillSemifinals(b, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    b = setWinner(b, 'sf-m0', 'A');
     b = setWinner(b, 'sf-m1', 'I');
     b = setWinner(b, 'final', 'A');
     expect(b.rounds[3][0].winner).toBe('A');
   });
 
-  it('changing QF winner clears downstream', () => {
+  it('changing QF winner does not affect SF', () => {
     const { bracket } = makeBracket();
     let b = setWinner(bracket, 'qf-m0', 'A');
     b = setWinner(b, 'qf-m1', 'E');
-    b = setWinner(b, 'sf-m0', 'A');
-    expect(b.rounds[3][0].wrestler1).toBe('A');
-
-    // Change QF pick — should clear semi winner and final slot
+    // Change QF pick — SF should remain untouched
     b = setWinner(b, 'qf-m0', 'C');
-    expect(b.rounds[2][0].wrestler1).toBe('C');
-    expect(b.rounds[2][0].winner).toBeNull();
-    expect(b.rounds[3][0].wrestler1).toBeNull();
+    expect(b.rounds[1][0].winner).toBe('C');
+    expect(b.rounds[2][0].wrestler1).toBeNull();
+    expect(b.rounds[2][0].wrestler2).toBeNull();
   });
 });
 
@@ -195,9 +200,13 @@ describe('swapWrestler', () => {
     const { bracket } = makeBracket();
     let b = setWinner(bracket, 'qf-m0', 'A');
     b = setWinner(b, 'qf-m1', 'E');
-    b = setWinner(b, 'sf-m0', 'A');
     b = setWinner(b, 'qf-m2', 'I');
     b = setWinner(b, 'qf-m3', 'M');
+    b = fillSemifinals(b, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    b = setWinner(b, 'sf-m0', 'A');
     b = setWinner(b, 'sf-m1', 'I');
     b = setWinner(b, 'final', 'A');
 
@@ -219,5 +228,41 @@ describe('swapWrestler', () => {
     const b = swapWrestler(bracket, 'NOBODY', 'Z');
     expect(b.rounds[0][0].wrestler1).toBe('A');
     expect(b.rounds[0][4].wrestler1).toBe('I');
+  });
+});
+
+describe('fillSemifinals', () => {
+  it('sets SF wrestlers from slots', () => {
+    const { bracket } = makeBracket();
+    const b = fillSemifinals(bracket, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    expect(b.rounds[2][0].wrestler1).toBe('A');
+    expect(b.rounds[2][0].wrestler2).toBe('E');
+    expect(b.rounds[2][1].wrestler1).toBe('I');
+    expect(b.rounds[2][1].wrestler2).toBe('M');
+    expect(b.rounds[2][0].winner).toBeNull();
+  });
+
+  it('applies pre-picked SF winners and propagates to final', () => {
+    const { bracket } = makeBracket();
+    const b = fillSemifinals(bracket, [
+      { winner1: 'A', winner2: 'E', winner: 'A' },
+      { winner1: 'I', winner2: 'M', winner: 'I' },
+    ]);
+    expect(b.rounds[2][0].winner).toBe('A');
+    expect(b.rounds[2][1].winner).toBe('I');
+    expect(b.rounds[3][0].wrestler1).toBe('A');
+    expect(b.rounds[3][0].wrestler2).toBe('I');
+  });
+
+  it('does not modify original bracket', () => {
+    const { bracket } = makeBracket();
+    fillSemifinals(bracket, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    expect(bracket.rounds[2][0].wrestler1).toBeNull();
   });
 });

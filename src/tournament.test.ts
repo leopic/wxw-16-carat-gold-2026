@@ -8,6 +8,9 @@ import {
   updatePairingSlots,
   confirmPairings,
   pickBracketWinner,
+  goToSfPairing,
+  updateSfPairingSlots,
+  confirmSfPairings,
   goBack,
   setBackup,
   performSwap,
@@ -160,7 +163,7 @@ describe('confirmPairings', () => {
     expect(b.rounds[1][2].wrestler2).toBe('K');
   });
 
-  it('carries pre-picked QF winners into the bracket', () => {
+  it('carries pre-picked QF winners into the bracket (without SF propagation)', () => {
     let state = makePairingState();
     state = updatePairingSlots(state, [
       { winner1: 'A', winner2: 'C', winner: 'A' },
@@ -172,8 +175,9 @@ describe('confirmPairings', () => {
     const b = confirmed.bracket!;
     expect(b.rounds[1][0].winner).toBe('A');
     expect(b.rounds[1][1].winner).toBe('G');
-    expect(b.rounds[2][0].wrestler1).toBe('A');
-    expect(b.rounds[2][0].wrestler2).toBe('G');
+    // QF winners do NOT auto-propagate to SF — SF stays empty
+    expect(b.rounds[2][0].wrestler1).toBeNull();
+    expect(b.rounds[2][0].wrestler2).toBeNull();
     expect(b.rounds[1][2].winner).toBeNull();
     expect(b.rounds[1][3].winner).toBeNull();
   });
@@ -186,15 +190,24 @@ describe('pickBracketWinner', () => {
     expect(next.bracket!.rounds[1][0].winner).toBe('A');
   });
 
-  it('propagates through semifinal to final', () => {
+  it('propagates through semifinal to final (with SF pairing)', () => {
     let state = makeBracketState();
     state = pickBracketWinner(state, 'qf-m0', 'A');
     state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
+
+    // Fill SFs via the sfPairing flow
+    state = goToSfPairing(state);
+    state = updateSfPairingSlots(state, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    state = confirmSfPairings(state);
+
     state = pickBracketWinner(state, 'sf-m0', 'A');
     expect(state.bracket!.rounds[3][0].wrestler1).toBe('A');
 
-    state = pickBracketWinner(state, 'qf-m2', 'I');
-    state = pickBracketWinner(state, 'qf-m3', 'M');
     state = pickBracketWinner(state, 'sf-m1', 'I');
     expect(state.bracket!.rounds[3][0].wrestler2).toBe('I');
 
@@ -232,6 +245,23 @@ describe('goBack', () => {
     const back = goBack(state)!;
     expect(back.bracket).toBeDefined();
     expect(back.round1Matches).toHaveLength(8);
+  });
+
+  it('from sfPairing goes to bracket', () => {
+    const state = goToSfPairing(makeBracketState());
+    const back = goBack(state)!;
+    expect(back.phase).toBe('bracket');
+  });
+
+  it('from bracket with sfPairingSlots goes to sfPairing', () => {
+    let state = makeBracketState();
+    state = goToSfPairing(state);
+    state = confirmSfPairings({ ...state, sfPairingSlots: [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]});
+    const back = goBack(state)!;
+    expect(back.phase).toBe('sfPairing');
   });
 });
 
@@ -308,9 +338,16 @@ describe('performSwap', () => {
     state = setBackup(state, 'Z');
     state = pickBracketWinner(state, 'qf-m0', 'A');
     state = pickBracketWinner(state, 'qf-m1', 'E');
-    state = pickBracketWinner(state, 'sf-m0', 'A');
     state = pickBracketWinner(state, 'qf-m2', 'I');
     state = pickBracketWinner(state, 'qf-m3', 'M');
+    // Fill SFs via sfPairing flow
+    state = goToSfPairing(state);
+    state = updateSfPairingSlots(state, [
+      { winner1: 'A', winner2: 'E', winner: null },
+      { winner1: 'I', winner2: 'M', winner: null },
+    ]);
+    state = confirmSfPairings(state);
+    state = pickBracketWinner(state, 'sf-m0', 'A');
     state = pickBracketWinner(state, 'sf-m1', 'I');
     state = pickBracketWinner(state, 'final', 'A');
 
@@ -318,5 +355,57 @@ describe('performSwap', () => {
     expect(swapped.bracket!.rounds[3][0].wrestler1).toBe('Z');
     expect(swapped.bracket!.rounds[3][0].winner).toBe('Z');
     expect(swapped.bracket!.rounds[2][0].winner).toBe('Z');
+  });
+});
+
+describe('goToSfPairing', () => {
+  it('transitions to sfPairing phase with empty slots', () => {
+    const state = goToSfPairing(makeBracketState());
+    expect(state.phase).toBe('sfPairing');
+    expect(state.sfPairingSlots).toHaveLength(2);
+    state.sfPairingSlots!.forEach((s) => {
+      expect(s.winner1).toBeNull();
+      expect(s.winner2).toBeNull();
+      expect(s.winner).toBeNull();
+    });
+  });
+});
+
+describe('confirmSfPairings', () => {
+  it('fills SF matches and returns to bracket phase', () => {
+    let state = makeBracketState();
+    state = pickBracketWinner(state, 'qf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
+    state = goToSfPairing(state);
+    state = updateSfPairingSlots(state, [
+      { winner1: 'A', winner2: 'I', winner: null },
+      { winner1: 'E', winner2: 'M', winner: null },
+    ]);
+    state = confirmSfPairings(state);
+    expect(state.phase).toBe('bracket');
+    expect(state.bracket!.rounds[2][0].wrestler1).toBe('A');
+    expect(state.bracket!.rounds[2][0].wrestler2).toBe('I');
+    expect(state.bracket!.rounds[2][1].wrestler1).toBe('E');
+    expect(state.bracket!.rounds[2][1].wrestler2).toBe('M');
+  });
+
+  it('carries pre-picked SF winners into bracket', () => {
+    let state = makeBracketState();
+    state = pickBracketWinner(state, 'qf-m0', 'A');
+    state = pickBracketWinner(state, 'qf-m1', 'E');
+    state = pickBracketWinner(state, 'qf-m2', 'I');
+    state = pickBracketWinner(state, 'qf-m3', 'M');
+    state = goToSfPairing(state);
+    state = updateSfPairingSlots(state, [
+      { winner1: 'A', winner2: 'I', winner: 'A' },
+      { winner1: 'E', winner2: 'M', winner: 'E' },
+    ]);
+    state = confirmSfPairings(state);
+    expect(state.bracket!.rounds[2][0].winner).toBe('A');
+    expect(state.bracket!.rounds[2][1].winner).toBe('E');
+    expect(state.bracket!.rounds[3][0].wrestler1).toBe('A');
+    expect(state.bracket!.rounds[3][0].wrestler2).toBe('E');
   });
 });

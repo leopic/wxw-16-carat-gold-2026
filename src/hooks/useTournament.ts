@@ -7,11 +7,14 @@ import {
   updatePairingSlots,
   confirmPairings,
   pickBracketWinner,
+  goToSfPairing,
+  updateSfPairingSlots,
+  confirmSfPairings,
   goBack,
   setBackup,
   performSwap,
 } from '../tournament';
-import { allRound1Complete, getRound1Winners } from '../bracket';
+import { allRound1Complete, getRound1Winners, allQFsDecided, getQFWinners } from '../bracket';
 
 const STORAGE_KEY = 'wxw-tournament';
 
@@ -81,6 +84,18 @@ export function useTournament() {
     setState((prev) => (prev ? pickBracketWinner(prev, matchId, winner) : prev));
   };
 
+  const handleGoToSfPairing = () => {
+    setState((prev) => (prev ? goToSfPairing(prev) : prev));
+  };
+
+  const handleSfSlotsChange = (slots: PairingSlot[]) => {
+    setState((prev) => (prev ? updateSfPairingSlots(prev, slots) : prev));
+  };
+
+  const handleSfPairingsConfirmed = (_pairings: Round2Pairing[]) => {
+    setState((prev) => (prev ? confirmSfPairings(prev) : prev));
+  };
+
   const handleBack = () => {
     setState((prev) => (prev ? goBack(prev) : prev));
   };
@@ -101,6 +116,9 @@ export function useTournament() {
 
   const r1Done = state?.phase === 'round1' ? allRound1Complete(state.round1Matches) : false;
   const round1Winners = state ? getRound1Winners(state.round1Matches) : [];
+  const allQFsDone = state?.bracket ? allQFsDecided(state.bracket) : false;
+  const qfWinners = state?.bracket ? getQFWinners(state.bracket) : [];
+  const sfNotYetSet = state?.bracket ? state.bracket.rounds[2][0].wrestler1 === null : true;
 
   return {
     state,
@@ -108,12 +126,18 @@ export function useTournament() {
     setSwapMode,
     r1Done,
     round1Winners,
+    allQFsDone,
+    qfWinners,
+    sfNotYetSet,
     handleSetup,
     handleRound1Pick,
     handleGoToPairing,
     handleSlotsChange,
     handlePairingsConfirmed,
     handleBracketPick,
+    handleGoToSfPairing,
+    handleSfSlotsChange,
+    handleSfPairingsConfirmed,
     handleBack,
     handleReset,
     handleBackupChange,

@@ -4,12 +4,18 @@ import {
   setRound1Winner as bracketSetRound1Winner,
   buildBracketFromPairings,
   setWinner as bracketSetWinner,
+  fillSemifinals,
   swapWrestler,
 } from './bracket';
 
 const EMPTY_SLOTS: PairingSlot[] = [
   { winner1: null, winner2: null, winner: null },
   { winner1: null, winner2: null, winner: null },
+  { winner1: null, winner2: null, winner: null },
+  { winner1: null, winner2: null, winner: null },
+];
+
+const EMPTY_SF_SLOTS: PairingSlot[] = [
   { winner1: null, winner2: null, winner: null },
   { winner1: null, winner2: null, winner: null },
 ];
@@ -58,10 +64,39 @@ export function pickBracketWinner(state: TournamentState, matchId: string, winne
   return { ...state, bracket: bracketSetWinner(state.bracket, matchId, winner) };
 }
 
+export function goToSfPairing(state: TournamentState): TournamentState {
+  return { ...state, phase: 'sfPairing', sfPairingSlots: state.sfPairingSlots ?? EMPTY_SF_SLOTS };
+}
+
+export function updateSfPairingSlots(state: TournamentState, slots: PairingSlot[]): TournamentState {
+  return { ...state, sfPairingSlots: slots };
+}
+
+export function confirmSfPairings(state: TournamentState): TournamentState {
+  if (!state.bracket || !state.sfPairingSlots) return state;
+
+  const sfSlots = state.sfPairingSlots.map((s) => ({
+    winner1: s.winner1!,
+    winner2: s.winner2!,
+    winner: s.winner,
+  }));
+
+  return {
+    ...state,
+    phase: 'bracket',
+    bracket: fillSemifinals(state.bracket, sfSlots),
+  };
+}
+
 export function goBack(state: TournamentState): TournamentState | null {
   if (state.phase === 'round1') return null;
   if (state.phase === 'pairing') return { ...state, phase: 'round1' };
-  if (state.phase === 'bracket') return { ...state, phase: 'pairing' };
+  if (state.phase === 'sfPairing') return { ...state, phase: 'bracket' };
+  if (state.phase === 'bracket') {
+    // If SF pairings were set, go back to sfPairing; otherwise to pairing
+    if (state.sfPairingSlots) return { ...state, phase: 'sfPairing' };
+    return { ...state, phase: 'pairing' };
+  }
   return state;
 }
 
@@ -86,9 +121,15 @@ export function performSwap(state: TournamentState, target: string): TournamentS
     winner: s.winner === target ? replacement : s.winner,
   }));
 
+  const sfPairingSlots = state.sfPairingSlots?.map((s) => ({
+    winner1: s.winner1 === target ? replacement : s.winner1,
+    winner2: s.winner2 === target ? replacement : s.winner2,
+    winner: s.winner === target ? replacement : s.winner,
+  }));
+
   const bracket = state.bracket
     ? swapWrestler(state.bracket, target, replacement)
     : state.bracket;
 
-  return { ...state, round1Matches, pairingSlots, bracket, backupUsed: true };
+  return { ...state, round1Matches, pairingSlots, sfPairingSlots, bracket, backupUsed: true };
 }

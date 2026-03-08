@@ -28,11 +28,12 @@ export type PairingSlot = {
 };
 
 export type TournamentState = {
-  phase: 'round1' | 'pairing' | 'bracket';
+  phase: 'round1' | 'pairing' | 'bracket' | 'sfPairing';
   round1Matches: Match[];        // 8 flat matches for Night 1
   pairingSlots?: PairingSlot[];  // in-progress pairing work (4 slots)
-  round2Pairings?: Round2Pairing[]; // 4 pairings (first 2 = left, last 2 = right)
+  round2Pairings?: Round2Pairing[]; // 4 QF pairings
   bracket?: Bracket;             // full bracket once pairings are set
+  sfPairingSlots?: PairingSlot[]; // in-progress SF pairing work (2 slots)
   backup?: string;               // backup wrestler who can sub in from round 2
   backupUsed?: boolean;           // true after the backup has been swapped in
 };

@@ -14,12 +14,18 @@ function App() {
     setSwapMode,
     r1Done,
     round1Winners,
+    allQFsDone,
+    qfWinners,
+    sfNotYetSet,
     handleSetup,
     handleRound1Pick,
     handleGoToPairing,
     handleSlotsChange,
     handlePairingsConfirmed,
     handleBracketPick,
+    handleGoToSfPairing,
+    handleSfSlotsChange,
+    handleSfPairingsConfirmed,
     handleBack,
     handleReset,
     handleBackupChange,
@@ -31,6 +37,11 @@ function App() {
   const emptySlots = [
     { winner1: null, winner2: null, winner: null },
     { winner1: null, winner2: null, winner: null },
+    { winner1: null, winner2: null, winner: null },
+    { winner1: null, winner2: null, winner: null },
+  ];
+
+  const emptySfSlots = [
     { winner1: null, winner2: null, winner: null },
     { winner1: null, winner2: null, winner: null },
   ];
@@ -109,12 +120,38 @@ function App() {
     );
   }
 
+  if (state.phase === 'sfPairing') {
+    return (
+      <div className="app">
+        {header}
+        {swapBar}
+        <PairingView
+          winners={qfWinners}
+          slots={state.sfPairingSlots ?? emptySfSlots}
+          onSlotsChange={handleSfSlotsChange}
+          onConfirm={handleSfPairingsConfirmed}
+          title={t('sfPairingTitle')}
+          subtitle={t('sfPairingSubtitle')}
+          confirmLabel={t('revealSemifinals')}
+          swapMode={swapMode}
+          onSwap={handleSwap}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       {header}
       {swapBar}
 
       <BracketView bracket={state.bracket!} onPickWinner={handleBracketPick} swapMode={swapMode} onSwap={handleSwap} />
+
+      {allQFsDone && sfNotYetSet && (
+        <button className="start-btn proceed-btn" onClick={handleGoToSfPairing}>
+          {t('setSfPairings')}
+        </button>
+      )}
     </div>
   );
 }

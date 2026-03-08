@@ -96,10 +96,15 @@ export function setWinner(bracket: Bracket, matchId: string, winner: string): Br
   return newBracket;
 }
 
+// QF (roundIdx 1) does NOT auto-propagate into SF (roundIdx 2).
+// SF pairings are set manually via the sfPairing phase.
+const SF_ROUND_IDX = 2;
+
 function propagateWinner(bracket: Bracket, roundIdx: number, matchIdx: number) {
   const { rounds } = bracket;
   const winner = rounds[roundIdx][matchIdx].winner;
 
+  if (roundIdx + 1 === SF_ROUND_IDX) return; // QF→SF boundary: stop
   if (roundIdx < rounds.length - 1) {
     const nextRound = rounds[roundIdx + 1];
     const nextMatchIdx = Math.floor(matchIdx / 2);
@@ -122,6 +127,7 @@ function clearDownstream(bracket: Bracket, roundIdx: number, matchIdx: number) {
   if (match.winner !== null) {
     match.winner = null;
 
+    if (roundIdx + 1 === SF_ROUND_IDX) return; // QF→SF boundary: stop
     if (roundIdx < rounds.length - 1) {
       const nextMatchIdx = Math.floor(matchIdx / 2);
       const slot = matchIdx % 2 === 0 ? 'wrestler1' : 'wrestler2';
@@ -129,6 +135,41 @@ function clearDownstream(bracket: Bracket, roundIdx: number, matchIdx: number) {
       clearDownstream(bracket, roundIdx + 1, nextMatchIdx);
     }
   }
+}
+
+export function allQFsDecided(bracket: Bracket): boolean {
+  return bracket.rounds[1].every((m) => m.winner !== null);
+}
+
+export function getQFWinners(bracket: Bracket): string[] {
+  return bracket.rounds[1]
+    .filter((m) => m.winner !== null)
+    .map((m) => m.winner!);
+}
+
+export function fillSemifinals(
+  bracket: Bracket,
+  sfSlots: { winner1: string; winner2: string; winner: string | null }[]
+): Bracket {
+  const b = deepClone(bracket);
+
+  sfSlots.forEach((slot, i) => {
+    b.rounds[SF_ROUND_IDX][i].wrestler1 = slot.winner1;
+    b.rounds[SF_ROUND_IDX][i].wrestler2 = slot.winner2;
+  });
+
+  // Apply any pre-picked SF winners
+  sfSlots.forEach((slot, i) => {
+    if (slot.winner) {
+      b.rounds[SF_ROUND_IDX][i].winner = slot.winner;
+      // Propagate SF winner to final
+      const finalMatch = b.rounds[SF_ROUND_IDX + 1][0];
+      const finalSlot = i === 0 ? 'wrestler1' : 'wrestler2';
+      finalMatch[finalSlot] = slot.winner;
+    }
+  });
+
+  return b;
 }
 
 export function swapWrestler(bracket: Bracket, target: string, replacement: string): Bracket {

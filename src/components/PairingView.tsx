@@ -11,9 +11,12 @@ type Props = {
   onConfirm: (pairings: Round2Pairing[]) => void;
   swapMode?: boolean;
   onSwap?: (wrestler: string) => void;
+  title?: string;
+  subtitle?: string;
+  confirmLabel?: string;
 };
 
-export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode, onSwap }: Props) {
+export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode, onSwap, title, subtitle, confirmLabel }: Props) {
   const {
     selected,
     available,
@@ -26,8 +29,8 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
 
   return (
     <div className="pairing-view">
-      <h1 className="pairing-title">{t('pairingTitle')}</h1>
-      <p className="pairing-subtitle">{t('pairingSubtitle')}</p>
+      <h1 className="pairing-title">{title ?? t('pairingTitle')}</h1>
+      <p className="pairing-subtitle">{subtitle ?? t('pairingSubtitle')}</p>
 
       <div className="winner-pool">
         {available.map((w) => (
@@ -109,7 +112,7 @@ export function PairingView({ winners, slots, onSlotsChange, onConfirm, swapMode
       </div>
 
       <button className="start-btn" onClick={handleConfirm} disabled={!allDecided}>
-        {t('revealBrackets')}
+        {confirmLabel ?? t('revealBrackets')}
       </button>
     </div>
   );

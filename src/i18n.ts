@@ -39,6 +39,11 @@ const strings = {
     clearMatch: 'Clear',
     allPlaced: 'All winners placed',
     revealBrackets: 'Reveal Brackets',
+    // SF Pairing
+    sfPairingTitle: 'Semifinal Pairings',
+    sfPairingSubtitle: 'Tap a quarterfinal winner below, then tap a slot to place them.',
+    revealSemifinals: 'Reveal Semifinals',
+    setSfPairings: 'Set Semifinal Pairings',
   },
   de: {
     appTitle: 'wXw 16 Carat Gold 2026',
@@ -80,6 +85,11 @@ const strings = {
     clearMatch: 'Leeren',
     allPlaced: 'Alle Gewinner platziert',
     revealBrackets: 'Turnierbaum anzeigen',
+    // SF Pairing
+    sfPairingTitle: 'Halbfinal-Paarungen',
+    sfPairingSubtitle: 'Tippe auf einen Viertelfinal-Gewinner und dann auf einen Platz.',
+    revealSemifinals: 'Halbfinale anzeigen',
+    setSfPairings: 'Halbfinal-Paarungen festlegen',
   },
   es: {
     appTitle: 'wXw 16 Carat Gold 2026',
@@ -121,6 +131,11 @@ const strings = {
     clearMatch: 'Borrar',
     allPlaced: 'Todos los ganadores colocados',
     revealBrackets: 'Revelar llaves',
+    // SF Pairing
+    sfPairingTitle: 'Semifinales – Combates',
+    sfPairingSubtitle: 'Toca un ganador de cuartos y luego un espacio para colocarlo.',
+    revealSemifinals: 'Revelar semifinales',
+    setSfPairings: 'Definir combates de semifinal',
   },
 } as const;
 
