@@ -1,4 +1,4 @@
-import type { Matchup, Round2Pairing } from './types';
+import type { Matchup, Round2Pairing } from './types.ts';
 
 export const EDITION_YEAR = 2027;
 export const EDITION_TITLE = `wXw 16 Carat Gold ${EDITION_YEAR}`;

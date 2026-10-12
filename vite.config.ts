@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-import { EDITION_TITLE, EDITION_DESCRIPTION } from './src/edition-2026'
+import { EDITION_TITLE, EDITION_DESCRIPTION } from './src/edition-2026.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
