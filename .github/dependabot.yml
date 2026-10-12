@@ -19,6 +19,12 @@ updates:
       # Majors follow the Node version in .nvmrc, bump them together by hand
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # typescript-eslint peers typescript <6.1.0, drop once it supports newer versions
+      - dependency-name: "typescript"
+        versions: [">=6.1.0"]
+      # v6 ERESOLVEs on npm 11 (optional peer chain pulls @babel/core 8), drop once that resolves
+      - dependency-name: "@vitejs/plugin-react"
+        versions: [">=6.0.0"]
     groups:
       # Minor and patch bumps land as one PR, majors stay separate so CI failures are easy to pin down
       npm-minor-patch:
