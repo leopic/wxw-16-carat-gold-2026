@@ -138,7 +138,7 @@ export function useTournament() {
     setState((prev) => (prev ? updateSfPairingSlots(prev, slots) : prev));
   };
 
-  const handleSfPairingsConfirmed = (_pairings: Round2Pairing[]) => {
+  const handleSfPairingsConfirmed = () => {
     setState((prev) => (prev ? confirmSfPairings(prev) : prev));
   };
 
