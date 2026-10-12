@@ -13,7 +13,7 @@ npm run test:watch   # vitest watch mode
 npm run preview      # preview production build
 ```
 
-Node version is pinned to 23 via `.nvmrc`. The pre-push hook runs `npm run build` then `npx vitest run` — both must pass before a push is accepted.
+Node version is pinned to 24 via `.nvmrc`. The pre-push hook runs `npm run build` then `npx vitest run` — both must pass before a push is accepted.
 
 To run a single test file: `npx vitest run src/bracket.test.ts`
 
